@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    @Html.Partial("_Head")
+</head>
+
+<body>
+    <!-- PreLoader Start -->
+    @Html.Partial("_PreLoader")
+    <!-- PreLoader End -->
+    <!-- Overlay Start -->
+    @Html.Partial("_Overlay")
+    <!-- Overlay End  -->
+    <!-- Navbar Start -->
+    @Html.Partial("_Navbar")
+    <!-- Navbar End -->
+    <!-- Whatsapp Button Start -->
+    @Html.Partial("_Wpme")
+    @Html.Partial("_Move")
+    <!-- Whatsapp Button End -->
+    <!-- Page Content Start -->
+    @RenderBody()
+    <!-- Page Content End -->
+    <!-- Footer Start -->
+    @Html.Partial("_Footer")
+    <!-- Footer End  -->
+    <!-- Script Start -->
+    @Html.Partial("_Script")
+    <!-- Script End -->
+</body>
+</html>

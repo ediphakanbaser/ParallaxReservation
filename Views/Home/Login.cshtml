@@ -1,0 +1,53 @@
+﻿@model Parallax.Models.TBLUSER
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-userproc">
+
+        <h4>Giriş Yap</h4>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-warning" })
+
+        <div class="input-box">
+
+            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "input" } })
+            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "label" })
+            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-warning" })
+
+        </div>
+
+        <div class="input-box">
+
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "input" } })
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "label" })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-warning" })
+        </div>
+
+
+
+        <container class="inline-buttons">
+            <div>
+                <input type="submit" value="Giriş" class="button submit-btn" />
+                @Html.ActionLink("Anasayfaya Dön", "Index", "Home", htmlAttributes: new { @class = "button btn" })
+            </div>
+
+        </container>
+    </div>
+}
+
+<script>
+    
+    var error = "@ViewBag.Error";
+
+    if (error !== "") {
+        alert(error);
+    }
+
+</script>

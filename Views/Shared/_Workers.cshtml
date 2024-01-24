@@ -1,0 +1,17 @@
+﻿@using Parallax.Models;
+
+@model IndexViewModel
+
+<div class="content-title">EKİBİMİZ</div>
+<div class="container-worker" style="background-color:#0f0f0f">
+    @foreach(var item in Model.EmployeeModels)
+    {
+        <div class="worker" style="background-image: url(@item.EmpImageURL)">
+            <div class="worker-info">
+                <h1>@item.EmpName @item.EmpSurname</h1>
+            </div>
+        </div>
+    }
+
+</div>
+

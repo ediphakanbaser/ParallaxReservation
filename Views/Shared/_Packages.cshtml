@@ -1,0 +1,36 @@
+﻿@model Parallax.Models.IndexViewModel
+
+<div class="content-title">PAKETLER</div>
+<section class="cards">
+
+
+    @foreach (var card in Model.PackageModels)
+    {
+        <div class="card">
+            <div class="card-title">
+                <h3>@card.ServiceName</h3>
+                <p>
+                    <span class="prize">@card.DiscountedPrice</span>
+                    <span class="per">/ tek seferde</span>
+                </p>
+                <ul>
+                    @foreach (var paragraphPart in card.ServiceParagraph.Split(','))
+                    {
+                        <li>@paragraphPart.Trim()</li>
+                    }
+                </ul>
+                @if (Session["UsernameSS"] != null)
+                {
+                    <button class="rezervet"><a href="@Url.Action("Reservation", "Home")">Randevu</a></button> 
+                 }
+                    else
+                {
+
+
+                }
+
+
+            </div>
+        </div>
+    }
+</section>

@@ -1,0 +1,232 @@
+﻿:root {
+    --myRed: #ae1622; /* Örnek bir renk değeri */
+
+}
+
+
+
+.form-userproc {
+    display: flex;
+    position: sticky;
+    z-index: 1;
+    background-color: #ae1622;
+    align-items: center;
+    width: 100%;
+    height: 89vh;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    color: white;
+    justify-content:center;
+    background-color: #ae1622;
+    
+}
+
+    .form-userproc h4 {
+        font-size: 2vw;
+        margin-top: 2vw;
+    }
+
+.input-box {
+    width: 50%;
+    display: flex;
+    justify-content: end;
+    line-height: 1.5vw;
+    position: relative;
+    border-bottom: 2px solid white;
+    margin-top: 3vh;
+
+}
+
+.input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px var(--myRed) inset !important;
+    -webkit-text-fill-color:white;
+    border-color: var(--myRed);
+}
+
+.input-box input {
+    width: 100%;
+    position: relative;
+    color: white !important;
+    font-size: 1.5vw;
+    border: none;
+    background: none !important;
+    outline: none !important;
+}
+
+    .input-box label {
+        position: relative;
+        right: 0;
+        display: flex;
+        text-align: end;
+        font-size: 1.5vw;
+        transition: .2s;
+        text-wrap: nowrap;
+    }
+
+        .input-box input:focus ~ label
+         {
+            font-weight:bolder;
+            transform: translateY(-1vw);
+            font-size: 1vw;
+        }
+
+.inline-buttons {
+    
+    margin-top:3vh;
+    display:flex;
+    justify-content:center;
+    
+}
+
+.submit-btn {
+    display: inline-block;
+    width: 25vw;
+    cursor: pointer;
+    border-radius: 20px;
+    border: none;
+    font-size: 2vw;
+    color: black;
+    background-color: buttonface;
+    text-decoration: none;
+    height: 2.5vw;
+}
+
+.btn {
+    text-align: center;
+    display: inline-block;
+    width: 25vw;
+    cursor: pointer;
+    border-radius: 20px;
+    border: none;
+    font-size: 2vw;
+    color: black;
+    background-color: buttonface;
+    text-decoration: none;
+    text-wrap: nowrap;
+    height: 2.5vw;
+    vertical-align: bottom;
+}
+
+.field-validation-error {
+    text-wrap: nowrap;
+    font-size: 1.5vw;
+}
+
+.input-box:
+/*.form-cont {
+    display: flex;
+    position: relative;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.Form-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+ 
+}
+.Form-box .Login-form {
+    width: 100%;
+    height: 80vh;
+    color: white;
+    font-size: 10px;
+    border: 2px solid white;
+    border-radius: 16px;
+    background-color: #ae1622;
+}
+
+.Form-box .Register-form {
+    width: 100%;
+    height: 80vh;
+    color: white;
+    font-size: 10px;
+    border: 2px solid white;
+    border-radius: 16px;
+    background-color: #ae1622;
+}
+
+
+.input-box {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    line-height: 2vw;
+    position: relative;
+    border-bottom: 2px solid white;
+    margin: 30px 0px;
+}
+
+.Register-form .input-box {
+    margin: 1vw 0px;
+}
+
+.input-box input {
+    width: 90%;
+    position: absolute;
+    color: white;
+    font-size: 2vw;
+    border: none;
+    background: none;
+    outline: none;
+}
+
+.input-box label {
+    font-size:2vw;
+    transition: .2s;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+    transform: translateY(-2vw);
+    font-size:1vw;
+}
+
+.inline-buttons {
+    width: 100%;
+    padding: 0% 4% 0% 4%;
+    display: flex;
+    flex-direction: row;
+}
+
+.submit-btn {
+    width: 38%;
+    margin-left: 10%;
+    margin-right: 2%;
+    height: 2vw;
+    cursor: pointer;
+    border-radius: 20px;
+    border: none;
+    font-size:1vw;
+}
+
+.close-btn {
+    width: 38%;
+    margin-right: 10%;
+    margin-left: 2%;
+    height: 2vw;
+    cursor: pointer;
+    border-radius: 20px;
+    border: none;
+    font-size: 1vw;
+}
+
+.Form-box h5 {
+    cursor: pointer;
+    margin-top: 5%;
+    font-size: 2vw;
+}
+
+.Form-box h1 {
+    font-size:4vw;
+}*/

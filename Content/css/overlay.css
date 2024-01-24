@@ -1,0 +1,62 @@
+﻿/* OVERLAY START */
+.mainbg {
+    width: auto;
+    height: 100vh;
+    background-position: center;
+    display: block;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -99;
+}
+
+.logo-con {
+    transform: translate(-50%, -50%);
+    position: absolute;
+    text-align: center;
+    top: 20%;
+    left: 50%;
+    z-index: 0;
+}
+
+.logo-svg {
+    width: 200px;
+    height: auto;
+    filter: invert(13%) sepia(45%) saturate(6597%) hue-rotate(345deg) brightness(99%) contrast(96%);
+}
+
+.logo-con h1,
+h2 {
+    margin: 3px;
+    text-shadow: 1px 1px #fff;
+    color: #ae1622;
+}
+
+Container.buttons {
+    justify-content: center;
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    bottom: 10%;
+    z-index: 1;
+}
+
+    Container.buttons button {
+        border: solid #ae1622 2px;
+        text-decoration: none;
+        color: snow;
+        background-color: transparent;
+        display: block;
+        text-align: center;
+        margin: 5px;
+        padding: 15px;
+        font-size: 20px;
+        font-weight: 500;
+        border-radius: 45px;
+        transition: background-color 0.5s ease-in-out;
+    }
+
+        Container.buttons button:hover {
+            background-color: #ae1622;
+            transition: background-color 0.5s ease-in-out;
+        }
+/* OVERLAY END*/

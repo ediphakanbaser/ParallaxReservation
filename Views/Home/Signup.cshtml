@@ -1,0 +1,91 @@
+﻿@model Parallax.Models.TBLUSER
+
+@{
+    ViewBag.Title = "Signup";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-userproc">
+
+    <h4>Kayıt Ol</h4>
+
+    @Html.ValidationSummary(true, "", new { @class = "text-warning" })
+
+    <div class="input-box">
+
+        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "input" } })
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "label" })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-warning" })
+    </div>
+
+
+    <div class="input-box">
+        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "input" } })
+        @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "label" })
+        @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-warning" })
+
+    </div>
+
+    <div class="input-box">
+        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "input" } })
+        @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "label" })
+        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-warning" })
+    </div>
+
+
+    <div class="input-box">
+        @Html.EditorFor(model => model.Mail, new { htmlAttributes = new { @class = "input" } })
+        @Html.LabelFor(model => model.Mail, htmlAttributes: new { @class = "label" })
+        @Html.ValidationMessageFor(model => model.Mail, "", new { @class = "text-warning" })
+    </div>
+
+    <div class="input-box">
+
+        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "input" } })
+        @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "label" })
+        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-warning" })
+        
+    </div>
+
+    <div class="input-box">
+
+        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "input" } })
+        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "label" })
+        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-warning" })
+    </div>
+
+    <div class="input-box">
+
+        @Html.EditorFor(model => model.RePassword, new { htmlAttributes = new { @class = "input" } })
+        @Html.LabelFor(model => model.RePassword, htmlAttributes: new { @class = "label" })
+        @Html.ValidationMessageFor(model => model.RePassword, "", new { @class = "text-warning" })
+    </div>
+
+
+    <container class="inline-buttons">
+        <div>
+            <input type="submit" value="Kayıt" class="button submit-btn" />
+            @Html.ActionLink("Anasayfaya Dön", "Index", "Home", htmlAttributes: new { @class = "button btn" })
+        </div>
+        
+    </container>
+</div>
+}
+
+<script>
+    // ViewBag.Notification değerini kontrol et ve alert kutusu göster
+    var notificationUser = "@ViewBag.NotificationUsername";
+    var succes = "@ViewBag.Success"
+    if (notificationUser !== "") {
+        alert(notificationUser);
+    }
+    else
+    {
+        alert(success);
+    }
+</script>

@@ -1,0 +1,19 @@
+﻿@using Parallax.Models;
+
+@model IndexViewModel
+
+<div class="discount" style="background-image: url(@Model.PageModel.DiscountImageURL);">
+    <div class="discount-text">
+
+        <span>@Model.PageModel.DiscountTitle</span>
+        <p>
+            @Model.PageModel.DiscountParagraph
+        </p>
+
+        <span>@Model.PageModel.DiscountAmount</span>
+    </div>
+    <Container class="buttons">
+        <a href="@Url.Action("Signup", "Home")">Kayıt Ol </a>
+        <a href="@Url.Action("Login", "Home")">Üye Giriş</a>
+    </Container>
+</div>

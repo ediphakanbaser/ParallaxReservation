@@ -1,0 +1,34 @@
+﻿
+/* CALENDAR START */
+.calendar {
+    position: relative;
+    justify-content: start;
+    display: flex;
+    left: 5%;
+    margin-bottom: 5%;
+}
+
+    .calendar .ui-widget {
+        font-size: 2vw;
+    }
+
+    .calendar .ui-widget-content {
+        background-color: #ae1622;
+    }
+
+    .calendar .ui-datepicker-prev span {
+        transform: scale(160%);
+    }
+
+    .calendar .ui-datepicker-next span {
+        transform: scale(160%);
+    }
+
+#datepicker .ui-datepicker-calendar a {
+    color: red; /* Günlere ait yazı rengini kırmızı olarak ayarlar */
+}
+
+#datepicker .ui-datepicker-calendar .ui-state-active {
+    color: black; /* Seçilen günlerin yazı rengini siyah olarak ayarlar */
+}
+/* CALENDAR END */

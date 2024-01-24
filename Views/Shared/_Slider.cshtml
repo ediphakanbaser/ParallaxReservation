@@ -1,0 +1,18 @@
+﻿@model Parallax.Models.IndexViewModel
+
+<div class="content-title">HİZMETLERİMİZ</div>
+<div class="slider">
+    @for (int i = 0; i < Model.ServiceModels.Count; i++)
+    {
+        <div class="slide @(i == 0 ? "active" : "")" style="background-image: url('@Model.ServiceModels[i].ServiceImageURL')">
+            <div class="inner">
+                <h1>@Model.ServiceModels[i].ServiceName</h1>
+                <p>@Model.ServiceModels[i].ServiceParagraph</p>
+            </div>
+        </div>
+    }
+    <div class="indicators">
+        <button id="prev"><i class="fas fa-angle-left"></i></button>
+        <button id="next"><i class="fas fa-angle-right"></i></button>
+    </div>
+</div>

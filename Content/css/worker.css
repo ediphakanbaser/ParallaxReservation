@@ -1,0 +1,54 @@
+﻿/* WORKER START */
+.content-title {
+    /* content-title için stil tanımları */
+}
+
+.container-worker {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    padding: 3% 5% 3% 5%;
+    height: auto;
+    max-width: fit-content;
+    width: 100%;
+}
+
+.worker {
+    display: block;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    height: 500px;
+    margin-right: 1vw;
+    margin-top: 1vw;
+    width: 21.359vw;
+}
+
+
+.worker-info {
+    position: absolute;
+    text-align: center;
+    display: none;
+    width: 100%;
+    height: 500px;
+}
+
+    .worker-info h1 {
+        font-size: 30px;
+        margin-bottom: 5px;
+        margin-top: 470px;
+        text-shadow: 1px 1px #fff;
+        background-color:#ae1622;
+    }
+
+    .worker-info p {
+        font-size: 25px;
+    }
+
+.worker:hover .worker-info {
+    display: block;
+    background-color: rgba(69, 69, 69, 0.25);
+}
+
+/* WORKER END */

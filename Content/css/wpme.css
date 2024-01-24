@@ -1,0 +1,49 @@
+﻿
+/* WP-BUTTON START */
+
+.wp-button {
+    z-index: 12345678;
+    width: 4vw;
+    height: 4vw;
+    position: fixed;
+    bottom: 150px;
+    right: 50px;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+    .wp-button.show-wp {
+        opacity: 1;
+    }
+
+    .wp-button:hover {
+        animation: trin 1s;
+        animation-iteration-count: infinite;
+    }
+
+@keyframes trin {
+    from {
+        transform: rotate3d(0, 0, 1, 0deg);
+    }
+
+    20%, 32%, 44%, 56%, 68% {
+        transform: rotate3d(0, 0, 1, 0deg);
+    }
+
+    23%, 35%, 47%, 59%, 71% {
+        transform: rotate3d(0,0,1,15deg);
+    }
+
+    26%, 38%, 50%, 62%, 74% {
+        transform: rotate3d(0,0,1,0deg);
+    }
+
+    29%, 41%, 53%, 65%, 77% {
+        transform: rotate3d(0,0,1,-15deg);
+    }
+
+    95% {
+        transform: rotate3d(0, 0, 1, 0deg);
+    }
+}
+/* WP-BUTTON END */

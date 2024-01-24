@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.Partial("_About")
+
+
+
+@if (Session["UsernameSS"] == null)
+
+{
+    @Html.Partial("_Discount")
+}
+else
+{ 
+
+}
+
+@Html.Partial("_Slider")
+
+@Html.Partial("_Packages")
+
+
+
+@Html.Partial("_Workers")
+
+
+

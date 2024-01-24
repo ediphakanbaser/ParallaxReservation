@@ -1,0 +1,23 @@
+﻿@using Parallax.Models
+
+@model IndexViewModel
+@{
+    ViewBag.Title = "Service";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_Slider")
+
+<div style="display: flex; justify-items: center; flex-direction: column; align-items:center; margin-bottom:5px">
+    
+    @for (int i = 0; i < Model.ServiceModels.Count; i++)
+    {
+
+
+        <h1 style="margin-top: 10px">@Model.ServiceModels[i].ServiceName</h1>
+        <p style="margin-top: 3px">@Model.ServiceModels[i].ServiceParagraph</p>
+
+    }
+
+</div>
+   

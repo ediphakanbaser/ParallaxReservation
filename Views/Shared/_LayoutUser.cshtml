@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    @Html.Partial("_Head")
+</head>
+
+<body>
+    <!-- PreLoader Start -->
+    @Html.Partial("_PreLoader")
+    <!-- PreLoader End -->
+    <!-- Navbar Start -->
+    @Html.Partial("_Navbar")
+    <!-- Navbar End -->
+    <!-- Page Content Start -->
+    @RenderBody()
+    <!-- Page Content End -->
+    <!-- Script Start -->
+    <script src="~/Scripts/js/preloader.js"></script>
+    <!-- Script End -->
+</body>
+</html>

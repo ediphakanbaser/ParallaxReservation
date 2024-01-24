@@ -1,0 +1,44 @@
+﻿<nav class="navbar">
+    <div class="nav-home">
+        @if (Session["UsernameSS"] == null)
+        {
+            <a href="@Url.Action("Index", "Home")">
+                <div>PARALLAX</div>
+            </a>
+        }
+        else
+        {
+            <a href="@Url.Action("Index", "Home")">
+                <div>@Session["UsernameSS"]</div>
+            </a>
+        }
+
+    </div>
+
+    <ul class="menu">
+
+        <li><a href="@Url.Action("Index", "Home")">Ana Sayfa</a></li>
+        <li><a href="@Url.Action("About", "Home")">Hakkımızda</a></li>
+        <li><a href="@Url.Action("Service", "Home")">Hizmetler</a></li>
+        <li><a href="@Url.Action("Employee", "Home")">Ekibimiz</a></li>
+
+        @if (Session["UsernameSS"] == null)
+        {
+            <li><a href="@Url.Action("Signup", "Home")">Kayıt OL</a></li>
+            <li><a href="@Url.Action("Login", "Home")">Üye Girişi</a></li>
+        }
+
+
+
+        @if (Session["UsernameSS"] != null)
+        {
+            <li><a href="@Url.Action("Reservation", "Home")">Randevu</a></li>
+            <li><a href="@Url.Action("Review", "Home")">Görüşler</a></li>
+            <li><a href="@Url.Action("Logout", "Home")">Çıkış Yap</a></li>
+
+
+        }
+
+    </ul>
+</nav>
+
