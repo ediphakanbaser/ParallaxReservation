@@ -1,21 +1,21 @@
 # Parallax
 
-Online rezervasyon üzerine çalışan herhangi bir kuruma ait web sitesi otomasyonu oluşturulması amaçlanmıştır.
+Aimed to create website automation for any institution that works on online reservations.
 
--Üyelere kayıt, giriş, çıkış sistemi.
+-Registration, login and logout system for customers.
 
--Kayıt işleminden sonra üyelere ait istenen hizmet ve tarih-saat üzerinden rezervasyon sistemi.
+-Reservation system for customers based on the desired service and date-time after registration.
 
--Rezervasyon sonrası yapılacak değerlendirme sistemi.
+-Testimonial system after reservation.
 
--Belirli işlemlerin yapılabileceği bir admin paneli.
+-An admin panel where certain operations can be performed.
 
-Birbiri ile ilişkili olan bu senaryoları sisteme kazandırmak amaçlandırılmıştır.
+Targeted to bring these interrelated scenarios into the system.
 
-Web sitesi şu an için Responsive design kazanmamıştır. 1920x1080 display üzerinde tasarlanmış olup yine aynı display üzerinde verimli çalışmaktadır.
+The website has not yet received Responsive design. It is designed on a 1920x1080 display and works efficiently on the same display.
 
-Senaryo işlevselliği kazandırıldıktan sonra Responsive Design'ın tamamlanması hedeflenmiştir.
+It is aimed to complete Responsive Design after adding scenarios functionality.
 
-İlişkisel veritabanına ait database diagram:
+Database diagram of the relational database:
 
 ![Diagram_v1 2](https://github.com/ediphakanbaser/ParallaxReservation/assets/113358561/223e6bcd-4079-45ab-a994-00ee60070c3f)
