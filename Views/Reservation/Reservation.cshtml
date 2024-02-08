@@ -1,0 +1,33 @@
+﻿@{
+
+    ViewBag.Title = "Reservation";   
+    ViewBag.today = DateTime.Today.ToString("yyyy-MM-dd");
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    @Html.Partial("_Head")
+    @Html.Partial("_JqueryCalendar")
+</head>
+
+<body>
+    <!-- PreLoader Start -->
+    @Html.Partial("_PreLoader")
+    <!-- PreLoader End -->
+    <!-- Navbar Start -->
+    @Html.Partial("_Navbar")
+    <!-- Navbar End -->
+    <!-- Whatsapp Button Start -->
+    @Html.Partial("_Calendar")
+    @Html.Partial("_Wpme")
+    @Html.Partial("_Move")
+    <!-- Whatsapp Button End -->
+    <!-- Footer Start -->
+    @Html.Partial("_Footer")
+    <!-- Footer End  -->
+    <!-- Script Start -->
+    @Html.Partial("_Script")
+    <!-- Script End -->
+</body>
+</html>

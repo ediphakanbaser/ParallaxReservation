@@ -1,0 +1,34 @@
+﻿@model Parallax.Models.ReservationViewModel
+
+@{
+    ViewBag.Title = "Reservation";
+}
+
+
+<div class="content-title">Randevu</div>
+<div class="r-box">
+    <div class="calendar">
+        <div id="datepicker"></div>
+        <div class="choice-box">
+            <div class="vertical-box">
+                <label id="date-text">Tarih:</label>
+                <input required id="datepicker-input" placeholder="Lütfen Gün Seçiniz">
+            </div>
+            <div class="vertical-box">
+                <label id="date-text">Hizmet:</label>
+                <select required id="serviceSelect">
+                    @foreach (var service in Model.TBLSERVICEs)
+                    {
+                        <option value="@service.ServiceID">@service.ServiceName</option>
+                    }
+                </select>
+            </div>
+            <button type="button" class="btn">Çalışanları Bul</button>
+        </div>
+    </div>
+</div>
+<section class="reservation-list">
+    <div>Rezervanyon listesi gelecek</div>
+</section>
+
+

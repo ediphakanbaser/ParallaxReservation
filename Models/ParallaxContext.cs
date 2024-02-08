@@ -8,7 +8,7 @@ namespace Parallax.Models
     public partial class ParallaxContext : DbContext
     {
         public ParallaxContext()
-            : base("name=ParallaxContext")
+            : base("name=ParallaxContext1")
         {
         }
 
@@ -23,6 +23,7 @@ namespace Parallax.Models
         public virtual DbSet<TBLPAGE> TBLPAGEs { get; set; }
         public virtual DbSet<EmpService> EmpServices { get; set; }
         public virtual DbSet<PaketHizmet> PaketHizmets { get; set; }
+        public virtual DbSet<ReservationInfo> ReservationInfoes { get; set; }
         public virtual DbSet<ServiceType> ServiceTypes { get; set; }
         public virtual DbSet<TekilHizmetler> TekilHizmetlers { get; set; }
 
@@ -50,11 +51,6 @@ namespace Parallax.Models
             modelBuilder.Entity<TBLREVIEW>()
                 .Property(e => e.Comment)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<TBLREVIEW>()
-                .HasMany(e => e.TBLRESERVATIONs)
-                .WithRequired(e => e.TBLREVIEW)
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TBLSERVICE>()
                 .Property(e => e.ServicePrice)
@@ -106,6 +102,14 @@ namespace Parallax.Models
             modelBuilder.Entity<PaketHizmet>()
                 .Property(e => e.DiscountedPrice)
                 .HasPrecision(8, 2);
+
+            modelBuilder.Entity<ReservationInfo>()
+                .Property(e => e.TimeSpent)
+                .HasPrecision(0);
+
+            modelBuilder.Entity<ReservationInfo>()
+                .Property(e => e.CompletionDateTime)
+                .HasPrecision(0);
 
             modelBuilder.Entity<ServiceType>()
                 .Property(e => e.ServicePrice)

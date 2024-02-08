@@ -1,15 +1,25 @@
 ﻿
 /* CALENDAR START */
+.r-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin-left: 50px;
+}
+
 .calendar {
     position: relative;
-    justify-content: start;
+    
     display: flex;
-    left: 5%;
-    margin-bottom: 5%;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 400px;
+    height: 400px;
 }
 
     .calendar .ui-widget {
-        font-size: 2vw;
     }
 
     .calendar .ui-widget-content {
@@ -17,11 +27,9 @@
     }
 
     .calendar .ui-datepicker-prev span {
-        transform: scale(160%);
     }
 
     .calendar .ui-datepicker-next span {
-        transform: scale(160%);
     }
 
 #datepicker .ui-datepicker-calendar a {
@@ -30,5 +38,65 @@
 
 #datepicker .ui-datepicker-calendar .ui-state-active {
     color: black; /* Seçilen günlerin yazı rengini siyah olarak ayarlar */
+}
+
+.ui-datepicker {
+    width: 390px !important; /* Takvimin genişliği */
+    height: 225px !important; /* Takvimin yüksekliği */
+}
+
+.choice-box {
+    
+    width: 400px;
+    display: flex;
+    flex-direction:column;
+    align-items: flex-start;
+    
+}
+
+#datepicker-input {
+    font-size: 25px;
+    width: 200px;
+    text-align: end;
+    border: none;
+    border-bottom: 1px solid black;
+    text-align:justify-all;
+}
+
+    #datepicker-input:focus {
+        outline-offset: 0px;
+        outline: none;
+        border-bottom: 1px solid black;
+    }
+
+#date-text {
+    font-size: 25px;
+}
+
+.vertical-box {
+    margin-top: 5%;
+    width: 400px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#service-type-listbox {
+    width: 300px;
+    font-size: 20px;
+    border: none;
+    border-bottom: 1px solid black;
+    outline-offset: 0px;
+    outline: none;
+    text-align:end;
+    font-weight:bold;
+}
+.reservation-list {
+    border:1px solid red;
+    width: calc(95% - 450px);
+    
+    margin-left: 5%;
+    position: static;
 }
 /* CALENDAR END */

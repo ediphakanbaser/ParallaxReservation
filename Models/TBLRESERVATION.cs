@@ -16,13 +16,13 @@ namespace Parallax.Models
 
         public int EmployeeServiceID { get; set; }
 
-        public DateTime RecordDateTime { get; set; }
+        public DateTime? RecordDateTime { get; set; }
 
-        public DateTime ReserveDateTime { get; set; }
+        public DateTime? ReserveDateTime { get; set; }
 
-        public int ReviewID { get; set; }
+        public int? ReviewID { get; set; }
 
-        public bool ReviesStatus { get; set; }
+        public bool? ReviewStatus { get; set; }
 
         public virtual SKILL SKILL { get; set; }
 
