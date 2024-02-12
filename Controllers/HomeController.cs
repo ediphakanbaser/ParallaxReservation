@@ -1,16 +1,18 @@
-﻿using Parallax.Models;
+﻿using Parallax.Helpers;
+using Parallax.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace Parallax.Controllers
 {
     public class HomeController : Controller
     {
 
-        private ParallaxContext context;
+        private readonly ParallaxContext context;
 
 
         public HomeController()
@@ -25,15 +27,22 @@ namespace Parallax.Controllers
             List<TBLEMPLOYEE> employeeModels = context.TBLEMPLOYEEs.ToList();
             List<PaketHizmet> packageModels = context.PaketHizmets.ToList();
 
+            TimeViewModel timeModel = TimeModelHelper.GetTimeModel(pageModel);
+
             IndexViewModel indexModel = new IndexViewModel
             {
                 PageModel = pageModel,
                 ServiceModels = serviceModels,
                 EmployeeModels = employeeModels,
-                PackageModels = packageModels
-            };
+                PackageModels = packageModels,
+                TimeModel = timeModel
+            };         
+
+            
+
             return View(indexModel);
         }
+        
         public ActionResult Signup()
         {
             return View();
@@ -104,12 +113,15 @@ namespace Parallax.Controllers
         public ActionResult About()
         {
             TBLPAGE pageModel = context.TBLPAGEs.FirstOrDefault();
+            TimeViewModel timeModel = TimeModelHelper.GetTimeModel(pageModel);
 
             IndexViewModel aboutModel = new IndexViewModel
             {
-                PageModel = pageModel
+                PageModel = pageModel,
+                TimeModel = timeModel
             };
 
+            
             return View(aboutModel);
         }
 
@@ -117,12 +129,14 @@ namespace Parallax.Controllers
         {
             TBLPAGE pageModel = context.TBLPAGEs.FirstOrDefault();
             List<TekilHizmetler> serviceModels = context.TekilHizmetlers.ToList();
-
+            TimeViewModel timeModel = TimeModelHelper.GetTimeModel(pageModel);
             IndexViewModel serviceModel = new IndexViewModel
             {
                 PageModel = pageModel,
-                ServiceModels = serviceModels
+                ServiceModels = serviceModels,
+                TimeModel = timeModel
             };
+
             return View(serviceModel);
         }
 
@@ -130,11 +144,15 @@ namespace Parallax.Controllers
         {
             TBLPAGE pageModel = context.TBLPAGEs.FirstOrDefault();
             List<TBLEMPLOYEE> employeeModels = context.TBLEMPLOYEEs.ToList();
+            TimeViewModel timeModel = TimeModelHelper.GetTimeModel(pageModel);
             IndexViewModel employeeModel = new IndexViewModel
             {
                 PageModel = pageModel,
-                EmployeeModels = employeeModels
+                EmployeeModels = employeeModels,
+                TimeModel = timeModel
             };
+
+       
             return View(employeeModel);
         }
 

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@model Parallax.Models.IndexViewModel
+
+
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     @Html.Partial("_Head")
@@ -22,7 +25,7 @@
     @RenderBody()
     <!-- Page Content End -->
     <!-- Footer Start -->
-    @Html.Partial("_Footer")
+    @Html.Partial("_Footer", Model.TimeModel)
     <!-- Footer End  -->
     <!-- Script Start -->
     @Html.Partial("_Script")

@@ -20,6 +20,8 @@ namespace Parallax.Models
 
         public DateTime? ReserveDateTime { get; set; }
 
+        public DateTime? ServiceEndDateTime { get; set; }
+
         public int? ReviewID { get; set; }
 
         public bool? ReviewStatus { get; set; }

@@ -2,8 +2,8 @@
 
 @{
     ViewBag.Title = "Reservation";
+    ViewBag.Title = "Time Slots";
 }
-
 
 <div class="content-title">Randevu</div>
 <div class="r-box">
@@ -12,23 +12,83 @@
         <div class="choice-box">
             <div class="vertical-box">
                 <label id="date-text">Tarih:</label>
-                <input required id="datepicker-input" placeholder="Lütfen Gün Seçiniz">
+                <input required id="datepicker-input" placeholder="Gün Seçimi">
             </div>
             <div class="vertical-box">
                 <label id="date-text">Hizmet:</label>
                 <select required id="serviceSelect">
-                    @foreach (var service in Model.TBLSERVICEs)
-                    {
-                        <option value="@service.ServiceID">@service.ServiceName</option>
-                    }
-                </select>
+    <option value="" disabled selected>Hizmet Seçimi</option>
+    @foreach (var service in Model.TBLSERVICEs)
+    {
+        <option value="@service.ServiceID" data-timespent="@service.TimeSpent">@service.ServiceName</option>
+    }
+</select>
+
             </div>
-            <button type="button" class="btn">Çalışanları Bul</button>
+
         </div>
     </div>
+    <div class="reservation-list">
+        <div id="employeeList">Rezervasyon yapabilmek için önce takvim üzerinden tarih sonrasında istediğiniz hizmeti seçiniz</div>
+    </div>
 </div>
-<section class="reservation-list">
-    <ul id="employeeList"></ul>
-</section>
 
+
+
+<script>
+    document.getElementById("serviceSelect").addEventListener("change", function () {
+        // Seçilen option'un data-timespent attribute'undan TimeSpent bilgisini alın
+        var selectedOption = this.options[this.selectedIndex];
+        var timeSpent = selectedOption.getAttribute("data-timespent");
+
+        // TimeSpent bilgisini label'a yaz
+        document.getElementById("timeSpentLabel").innerText = "Time Spent: " + timeSpent;
+    });
+    
+
+    $(document).ready(function () {
+        $('#serviceSelect').change(function () {
+        var selectedDateTime = $("#datepicker-input").val();
+
+        // Tarih formatını kontrol etmek için bir regex kullanabilirsiniz.
+        var dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+        if (!dateFormatRegex.test(selectedDateTime)) {
+            alert("Geçersiz tarih formatı. Lütfen yyyy-MM-dd formatında giriniz.");
+            return;
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Reservation", "Reservation")',
+                data: { selectedDateTime: selectedDateTime, selectedServiceId: $("#serviceSelect").val() },
+                success: function (result) {
+                    if (result.success) {
+                        // Başarılı durumda çalışanları listeleyin
+                        var employeeList = $("#employeeList");
+                        employeeList.empty();
+                        $.each(result.employees, function (index, employee) {
+                            var employeeDiv = $('<div class="calendar-cards"><div class="worker-img" style="background-image: url(' + employee.EmpImageURL + ')"></div><div class="reservation-info"><h2>' + employee.EmpName + " " + employee.EmpSurname + '</h2><div class="timeline"></div></div></div >');
+
+                            $.each(@Html.Raw(Json.Encode(ViewBag.TimeSlots)), function (index, timeSlot) {
+                            employeeDiv.find('.timeline').append('<p>' + timeSlot + '</p>');
+                            });
+
+                            employeeList.append(employeeDiv);
+                        });
+                    } else {
+                        // Hata durumunda kullanıcıya bilgi verin
+                        alert(result.message);
+                    }
+                },
+                error: function () {
+                    // Hata durumunda genel bir mesaj gösterin
+                    alert("Bir hata oluştu.");
+                }
+
+            });
+        }
+    });
+   });
+</script>
 

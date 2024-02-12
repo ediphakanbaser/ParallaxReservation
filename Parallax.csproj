@@ -169,6 +169,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\TimeModelHelper.cs" />
     <Compile Include="Models\EmpService.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\PaketHizmet.cs" />
@@ -185,6 +186,8 @@
     <Compile Include="Models\TBLSERVICE.cs" />
     <Compile Include="Models\TBLUSER.cs" />
     <Compile Include="Models\TekilHizmetler.cs" />
+    <Compile Include="Models\TimeInfo.cs" />
+    <Compile Include="Models\TimeViewModel.cs" />
     <Compile Include="Models\TYPE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

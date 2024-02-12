@@ -41,5 +41,18 @@ namespace Parallax.Models
         [Column(Order = 6)]
         [StringLength(50)]
         public string DiscountAmount { get; set; }
+
+        
+        [Column(Order = 7)]
+        public TimeSpan WorkStartTime { get; set; }
+
+        [Column(Order = 8)]
+        public TimeSpan BreakStartTime { get; set; }
+
+        [Column(Order = 9)]
+        public TimeSpan BreakEndTime { get; set; }
+
+        [Column(Order = 10)]
+        public TimeSpan WorkEndTime { get; set; }
     }
 }

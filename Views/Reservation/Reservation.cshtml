@@ -1,6 +1,8 @@
-﻿@{
+﻿@model Parallax.Models.ReservationViewModel
 
-    ViewBag.Title = "Reservation";   
+@{
+
+    ViewBag.Title = "Reservation";
     ViewBag.today = DateTime.Today.ToString("yyyy-MM-dd");
 }
 
@@ -24,7 +26,7 @@
     @Html.Partial("_Move")
     <!-- Whatsapp Button End -->
     <!-- Footer Start -->
-    @Html.Partial("_Footer")
+    @Html.Partial("_Footer", Model.TimeModel)
     <!-- Footer End  -->
     <!-- Script Start -->
     @Html.Partial("_Script")

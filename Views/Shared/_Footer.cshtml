@@ -1,4 +1,5 @@
-﻿<footer>
+﻿@model Parallax.Models.TimeViewModel
+<footer>
     <div class="footer-container">
         <div class="footer-column">
             <h3>İletişim</h3>
@@ -42,6 +43,23 @@
                 <li>
                     <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
                 </li>
+
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>Mesai Saatlerimiz</h3>
+            <ul>
+                <li>
+                    <p>
+                        Hafta içi ve Cumartesi<br>
+                        @Model.FormattedWorkStartTime -
+                        @Model.FormattedBreakStartTime <br>
+                        @Model.FormattedBreakEndTime -
+                        @Model.FormattedWorkEndTime
+                    </p>
+                </li>
+                <li><p>Pazar<br> KAPALI </p></li>
 
             </ul>
         </div>

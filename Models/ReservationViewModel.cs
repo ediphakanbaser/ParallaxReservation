@@ -10,5 +10,10 @@ namespace Parallax.Models
         public List<ServiceType> ServiceTypes  { get; set; }
         public List<TBLSERVICE> TBLSERVICEs { get; set; }
         public List<EmpService> EmpServices { get; set; }
+
+        public TBLPAGE PageModel { get; set; }
+
+        public TimeViewModel TimeModel { get; set; }
+
     }
 }
