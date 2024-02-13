@@ -11,5 +11,6 @@ namespace Parallax.Models
         public string FormattedBreakStartTime { get; set; }
         public string FormattedBreakEndTime { get; set; }
         public string FormattedWorkEndTime { get; set; }
+        
     }
 }

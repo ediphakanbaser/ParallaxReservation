@@ -22,7 +22,7 @@ namespace Parallax.Controllers
         }
         public ActionResult Index()
         {
-            TBLPAGE pageModel = context.TBLPAGEs.FirstOrDefault();
+            TBLPAGE pageModel = context.TBLPAGEs.FirstOrDefault();            
             List<TekilHizmetler> serviceModels = context.TekilHizmetlers.ToList();
             List<TBLEMPLOYEE> employeeModels = context.TBLEMPLOYEEs.ToList();
             List<PaketHizmet> packageModels = context.PaketHizmets.ToList();
