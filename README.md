@@ -18,4 +18,5 @@ It is aimed to complete Responsive Design after adding scenarios functionality.
 
 Database diagram of the relational database:
 
-![Diagram_v1 2](https://github.com/ediphakanbaser/ParallaxReservation/assets/113358561/223e6bcd-4079-45ab-a994-00ee60070c3f)
+![Diagram_v1 3](https://github.com/ediphakanbaser/ParallaxReservation/assets/113358561/e6c8a809-53c0-4172-9b65-5c2175fcc337)
+
