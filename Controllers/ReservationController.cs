@@ -71,7 +71,7 @@ namespace Parallax.Controllers
                               }).ToList();
 
                 List<EmployeeTimeSlots> employeeTimeSlotsList = new List<EmployeeTimeSlots>();
-
+                List<int> finalTimeSlotsCounts = new List<int>();
                 foreach (var employee in result)
                 {
                     Console.WriteLine($"EmployeeID: {employee.EmployeeID}, EmpName: {employee.EmpName}, EmpSurname: {employee.EmpSurname}, EmpImageURL: {employee.EmpImageURL}");
@@ -79,7 +79,8 @@ namespace Parallax.Controllers
                     {
                         EmployeeID = employee.EmployeeID,
                         ReservedTimeSlots = new List<string>(),
-                        FinalTimeSlots = new List<string>()
+                        FinalTimeSlots = new List<string>(),
+                        
                     };
 
                     var reservations = context.TBLRESERVATIONs
@@ -105,11 +106,11 @@ namespace Parallax.Controllers
 
                     List<string> finalTimeSlots = RemoveReservedTimeSlots(timeSlots, employeeTimeSlots.ReservedTimeSlots);
                     employeeTimeSlots.FinalTimeSlots.AddRange(finalTimeSlots);
-
+                    finalTimeSlotsCounts.Add(employeeTimeSlots.FinalTimeSlots.Count);
                     employeeTimeSlotsList.Add(employeeTimeSlots);
                 }
 
-                return Json(new { success = true, employees = result, timeSlotsList = employeeTimeSlotsList, timeModel });
+                return Json(new { success = true, employees = result, timeSlotsList = employeeTimeSlotsList, finalTimeSlotsCounts, timeModel });
             }
             catch (Exception ex)
             {

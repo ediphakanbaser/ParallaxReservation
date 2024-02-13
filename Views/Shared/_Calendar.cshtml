@@ -5,7 +5,7 @@
     ViewBag.Title = "Time Slots";
 }
 
-<div class="content-title">Randevu</div>
+
 <div class="r-box">
     <div class="calendar">
         <div id="datepicker"></div>
@@ -29,7 +29,25 @@
         </div>
     </div>
     <div class="reservation-list">
-        <div id="employeeList">Rezervasyon yapabilmek için önce takvim üzerinden tarih sonrasında istediğiniz hizmeti seçiniz</div>
+        <div id="employeeList">
+            <div class="p-box">
+                <h1>RANDEVU</h1>
+                <br />
+                <br />
+                <h3>
+                    Kullanıcımız olarak ilk deneyiminiz ise lütfen sistemi öğrenmek adına bütün metni okuyunuz.
+                    <br />
+                    <br />
+                    Rezervasyon yapabilmek için önce takvim üzerinden tarih sonrasında istediğiniz hizmeti seçiniz. Her hizmet seçiminizde rezervasyon sayfası değişecektir.
+                    <br />
+                    <br />
+                    Seçilmiş hizmeti veren ilgili personellerimizin müsait olduğu zaman listesinden size uygun birini seçebilirsiniz.
+                    <br />
+                    <br />
+                    Yapılan seçim sonrasında ekranın sol kısmında seçtiğiniz rezervasyonun bilgilerini görüntüleyeceksiniz. Artık tek yapmanız gereken yerinizi ayırtabilmek için Rezervasyonu onayla butonuna tıklamak :)
+                </h3>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -64,41 +82,47 @@
                         selectedServiceId: $("#serviceSelect").val(),
                         selectedTimeSpent: selectedTimeSpent
                       },
-                    success: function (result)
-                    {
+                    success: function (result) {
                         if (result.success) {
                             // Başarılı durumda çalışanları listeleyin
                             var employeeList = $("#employeeList");
                             employeeList.empty();
 
                             $.each(result.employees, function (index, employee) {
-                                var employeeDiv = $('<div class="calendar-cards"><div class="worker-img" style="background-image: url(' + employee.EmpImageURL + ')"></div><div class="reservation-info"><h2>' + employee.EmpName + " " + employee.EmpSurname + '</h2><div class="timeline"></div></div></div>');
+                                var employeeDiv = $('<div class="calendar-cards"><div class="worker-img" style="background-image: url(' + employee.EmpImageURL + ')"></div><div class="reservation-info"><h2>' + employee.EmpName + " " + employee.EmpSurname + '</h2><div class="timelinebox"><div class="timeline-left"></div><div class="timeline-right"></div></div></div></div>');
 
                                 // Her çalışan için FinalTimeSlots'ları al
                                 var finalTimeSlots = result.timeSlotsList[index].FinalTimeSlots;
 
-                                // Her bir zaman dilimini çalışanın timeline'ına ekle
-                                $.each(finalTimeSlots, function (index, timeSlot) {
-                                    employeeDiv.find('.timeline').append('<p>' + timeSlot + '</p>');
-                                });
+                                // Çalışanın FinalTimeSlots sayısını al
+                                var finalTimeSlotsCount = result.finalTimeSlotsCounts[index];
+
+                                // Timeline sınıflarını ayarla
+                                if (finalTimeSlotsCount > 0) {
+                                    // 0'dan count/2'ye kadar olan indexler için timeline-left sınıfını ekle
+                                    for (var i = 0; i < Math.floor(finalTimeSlotsCount / 2); i++) {
+                                        employeeDiv.find('.timeline-left').append('<p>' + finalTimeSlots[i] + '</p>');
+                                    }
+
+                                    // count/2'den count'e kadar olan indexler için timeline-right sınıfını ekle
+                                    for (var j = Math.floor(finalTimeSlotsCount / 2); j < finalTimeSlotsCount; j++) {
+                                        employeeDiv.find('.timeline-right').append('<p>' + finalTimeSlots[j] + '</p>');
+                                    }
+                                }
 
                                 employeeList.append(employeeDiv);
                             });
-                        }
-                            else
-                            {
+                        } else {
                             // Hata durumunda kullanıcıya bilgi verin
                             alert(result.message);
-                            }
+                        }
                     },
 
                     error: function () {
                     // Hata durumunda genel bir mesaj gösterin
                     alert("Bir hata oluştu.");
                     },
-                    complete: function () {
-                    console.log(selectedTimeSpent);
-                    }
+                    
                 });
 
             }

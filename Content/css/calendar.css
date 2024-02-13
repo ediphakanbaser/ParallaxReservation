@@ -1,6 +1,7 @@
 ﻿
 /* CALENDAR START */
 .r-box {
+    margin-top: 11vh;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -94,49 +95,68 @@
     text-align:end;
     font-weight:bold;
 }
-.reservation-list {
-    padding-left: 10px;
+.reservation-list {    
+    padding-left: 50px;
+    padding-right: 50px;
     position: relative;
     width: calc(100% - 450px);
     display: flex;
     flex-direction: column;
 }
 
-.calendar-cards {
-    
-    position: relative;
+.calendar-cards {    
     height: 500px;
-    width: calc(100% - 10px);
+    width: calc(100% - 100px);
     margin-bottom: 15px;
     display: flex;
+    border:5px solid #ae1622;
 }
 
 .worker-img {
     display: block;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;    
-    height: 500px;   
-    width: 400px;
+    background-size: cover;
+    height: 500px;
+    width: 400px;    
+    border-right: 5px solid #ae1622;
 }
 
 .reservation-info {
-    
     width: calc(100% - 300px);
-    
 }
 
-.reservation-info h2 {
-    display:flex;
-    justify-content:center;
-}
+    .reservation-info h2 {
+        display: flex;
+        justify-content: center;
+        border-bottom: 5px solid #ae1622;
+    }
 
-.timeline {
-    display:flex;
-    flex-direction:column;
-    flex-wrap:wrap;
-    margin-top:15px;
-    margin-left: 15px;
+.timelinebox {
+    display: flex;
     height: calc(485px - 1.5em);
+}
+.timeline-right {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: calc(485px - 1.5em);
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+}
+
+.timeline-left {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 50%;
+    height: calc(485px - 1.5em);
+    justify-content: center;
+    align-items: center;
+}
+.p-box {
+    padding-top:25px;
+    text-align:center;
 }
 /* CALENDAR END */
