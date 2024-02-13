@@ -66,22 +66,25 @@
                       },
                     success: function (result)
                     {
-                            if (result.success)
-                            {
-                                // Başarılı durumda çalışanları listeleyin
-                                var employeeList = $("#employeeList");
-                                employeeList.empty();
-                                $.each(result.employees, function (index, employee) {
-                                    var employeeDiv = $('<div class="calendar-cards"><div class="worker-img" style="background-image: url(' + employee.EmpImageURL + ')"></div><div class="reservation-info"><h2>' + employee.EmpName + " " + employee.EmpSurname + '</h2><div class="timeline"></div></div></div >');
+                        if (result.success) {
+                            // Başarılı durumda çalışanları listeleyin
+                            var employeeList = $("#employeeList");
+                            employeeList.empty();
 
-                                    // finalTimeSlots'ı doğru bir şekilde almak için backend'den gelen veriye göre ayarlamalısınız
-                                    $.each(result.finalTimeSlots, function (index, timeSlot) {
+                            $.each(result.employees, function (index, employee) {
+                                var employeeDiv = $('<div class="calendar-cards"><div class="worker-img" style="background-image: url(' + employee.EmpImageURL + ')"></div><div class="reservation-info"><h2>' + employee.EmpName + " " + employee.EmpSurname + '</h2><div class="timeline"></div></div></div>');
+
+                                // Her çalışan için FinalTimeSlots'ları al
+                                var finalTimeSlots = result.timeSlotsList[index].FinalTimeSlots;
+
+                                // Her bir zaman dilimini çalışanın timeline'ına ekle
+                                $.each(finalTimeSlots, function (index, timeSlot) {
                                     employeeDiv.find('.timeline').append('<p>' + timeSlot + '</p>');
-                                    });
-
-                                    employeeList.append(employeeDiv);
                                 });
-                            }
+
+                                employeeList.append(employeeDiv);
+                            });
+                        }
                             else
                             {
                             // Hata durumunda kullanıcıya bilgi verin

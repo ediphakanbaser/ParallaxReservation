@@ -170,6 +170,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TimeModelHelper.cs" />
+    <Compile Include="Models\EmployeeTimeSlots.cs" />
     <Compile Include="Models\EmpService.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\PaketHizmet.cs" />

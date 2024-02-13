@@ -30,12 +30,12 @@ namespace Parallax.Controllers
             List<ServiceType> serviceType = context.ServiceTypes.ToList();
             List<TBLSERVICE> tblServices = context.TBLSERVICEs.ToList();
             List<EmpService> empService = context.EmpServices.ToList();
-            
-            
+
+
 
             // RemoveReservedTimeSlots fonksiyonunu çağırarak rezerve edilen zaman dilimlerini çıkar
-            
-            
+
+
             ReservationViewModel reservationModel = new ReservationViewModel
             {
                 ServiceTypes = serviceType,
@@ -46,7 +46,7 @@ namespace Parallax.Controllers
 
             return View(reservationModel);
         }
-        
+
         [HttpPost]
         public ActionResult Reservation(string selectedDateTime, int selectedServiceId, string selectedTimeSpent)
         {
@@ -57,14 +57,8 @@ namespace Parallax.Controllers
                     return Json(new { success = false, message = "Geçersiz tarih formatı. Lütfen yyyy-MM-dd formatında giriniz." });
                 }
 
-                // Zaman modelini al
                 TimeViewModel timeModel = TimeModelHelper.GetTimeModel(context.TBLPAGEs.FirstOrDefault());
 
-                // Dönüşümü gerçekleştir
-                
-               
-
-                // Kullanıcının seçtiği tarih ve hizmete uygun olan çalışanları bulmak için sorgu yapılır.
                 var result = (from e in context.TBLEMPLOYEEs
                               join s in context.SKILLS on e.EmployeeID equals s.EmployeeID
                               where s.ServiceID == selectedServiceId
@@ -76,90 +70,114 @@ namespace Parallax.Controllers
                                   e.EmpImageURL
                               }).ToList();
 
+                List<EmployeeTimeSlots> employeeTimeSlotsList = new List<EmployeeTimeSlots>();
 
-                List<string> reservedTimeSlots = new List<string>();
-                // Her bir employe için rezervasyonları kontrol et
                 foreach (var employee in result)
                 {
+                    Console.WriteLine($"EmployeeID: {employee.EmployeeID}, EmpName: {employee.EmpName}, EmpSurname: {employee.EmpSurname}, EmpImageURL: {employee.EmpImageURL}");
+                    EmployeeTimeSlots employeeTimeSlots = new EmployeeTimeSlots
+                    {
+                        EmployeeID = employee.EmployeeID,
+                        ReservedTimeSlots = new List<string>(),
+                        FinalTimeSlots = new List<string>()
+                    };
+
                     var reservations = context.TBLRESERVATIONs
-                        .Where(r => r.EmployeeServiceID == employee.EmployeeID && DbFunctions.TruncateTime(r.ReserveDateTime.Value) == parsedDate.Date)
+                        .Where(r => r.SKILL.EmployeeID == employee.EmployeeID && DbFunctions.TruncateTime(r.ReserveDateTime.Value) == parsedDate.Date)
                         .Select(r => new { r.ReserveDateTime, r.ServiceEndDateTime })
                         .ToList();
 
                     foreach (var reservation in reservations)
                     {
-                        // Rezervasyon başlangıç ve bitiş saatlerini liste halinde ekleyin
-                        if (reservation.ReserveDateTime != null && reservation.ServiceEndDateTime != null)
-                        {
-                            reservedTimeSlots.Add(reservation.ReserveDateTime.Value.ToString("HH:mm") + " - " + reservation.ServiceEndDateTime.Value.ToString("HH:mm"));
-                        }
+                        string reservationString = reservation.ReserveDateTime.Value.ToString("HH:mm") + " - " + reservation.ServiceEndDateTime.Value.ToString("HH:mm");
+                        employeeTimeSlots.ReservedTimeSlots.Add(reservationString);
                     }
-                }
-                
+
                     List<string> timeSlots = GenerateTimeSlots(
-                    timeModel,
-                    DateTime.Parse(timeModel.FormattedWorkStartTime),
-                    DateTime.Parse(timeModel.FormattedBreakStartTime),
-                    DateTime.Parse(timeModel.FormattedBreakEndTime),
-                    DateTime.Parse(timeModel.FormattedWorkEndTime),
-                    TimeSpan.Parse(selectedTimeSpent),
-                    reservedTimeSlots
-                );
-                
-                
-                // GenerateTimeSlots fonksiyonunu çağırarak zaman dilimlerini oluştur
-                
-                
+                        timeModel,
+                        DateTime.Parse(timeModel.FormattedWorkStartTime),
+                        DateTime.Parse(timeModel.FormattedBreakStartTime),
+                        DateTime.Parse(timeModel.FormattedBreakEndTime),
+                        DateTime.Parse(timeModel.FormattedWorkEndTime),
+                        TimeSpan.Parse(selectedTimeSpent),
+                        employeeTimeSlots.ReservedTimeSlots
+                    );
 
-                // RemoveReservedTimeSlots fonksiyonunu çağırarak rezerve edilen zaman dilimlerini çıkar
-                List<string> finalTimeSlots = RemoveReservedTimeSlots(timeSlots, reservedTimeSlots);
+                    List<string> finalTimeSlots = RemoveReservedTimeSlots(timeSlots, employeeTimeSlots.ReservedTimeSlots);
+                    employeeTimeSlots.FinalTimeSlots.AddRange(finalTimeSlots);
 
-               
-                // AJAX isteği sonucunu JSON olarak döner.
-                return Json(new { success = true, employees = result, reservedTimeSlots, finalTimeSlots, timeModel});
+                    employeeTimeSlotsList.Add(employeeTimeSlots);
+                }
+
+                return Json(new { success = true, employees = result, timeSlotsList = employeeTimeSlotsList, timeModel });
             }
             catch (Exception ex)
             {
-                // Hata durumunda JSON olarak hata mesajını döner.
-                return Json(new { success = false, message = ex.Message });
+                return Json(new { success = false, message = ex.ToString() });
             }
         }
+
 
         // GenerateTimeSlots fonksiyonunu TimeViewModel parametresi ile güncelle
         private List<string> GenerateTimeSlots(TimeViewModel timeModel, DateTime workStartTime, DateTime breakStartTime, DateTime breakEndTime, DateTime workEndTime, TimeSpan selectedTimeSpent, List<string> reservedTimeSlots)
         {
             List<string> timeSlots = new List<string>();
+            TimeSpan breakTime = breakEndTime - breakStartTime;
+            int breakT = (int)breakTime.TotalMinutes;
             DateTime currentTime = workStartTime;
             TimeSpan timeSpent = selectedTimeSpent; // ViewModelTimeSpent'i burada al
+            DateTime currentTimeSpent = currentTime.Add(timeSpent);
 
             while (currentTime < workEndTime)
             {
-                // Belirli aralıklarla zaman dilimlerini oluştur
-                string timeSlot = currentTime.ToString("HH:mm") + " - " + currentTime.Add(timeSpent).ToString("HH:mm");
+                while ((currentTime < breakStartTime && currentTimeSpent > breakStartTime) || (currentTime >= breakStartTime && currentTimeSpent < breakEndTime) || (currentTime < breakEndTime && currentTimeSpent >= breakEndTime))
 
-                // Eğer oluşturulan zaman dilimi rezerve edilmemişse ve çalışma saatleri içerisinde ise listeye ekle
-                if (!reservedTimeSlots.Contains(timeSlot) && currentTime >= workStartTime && currentTime.Add(timeSpent) <= workEndTime)
                 {
-                    timeSlots.Add(timeSlot);
-                    currentTime = currentTime.AddMinutes(15);
+                    currentTime = breakEndTime;
+                    currentTimeSpent = currentTime.Add(timeSpent);
                 }
-                else
+                if (currentTimeSpent <= breakStartTime || (currentTimeSpent > breakEndTime && currentTimeSpent <= workEndTime))
                 {
-                    // Mola başlangıcı ve bitiş arasında ise mola zamanını atla
-                    if (currentTime >= breakStartTime && currentTime.Add(timeSpent) <= breakEndTime)
+                    if (reservedTimeSlots.Count != 0)
                     {
-                        currentTime = currentTime.AddMinutes(60); // Mola süresini 15 dakika olarak kabul ettim, bu süreyi istediğiniz gibi değiştirebilirsiniz.
+                        foreach (string reservedTimeSlot in reservedTimeSlots)
+                        {
+                            string[] reservedTimeParts = reservedTimeSlot.Split('-');
+                            DateTime reservedStartTime = DateTime.Parse(reservedTimeParts[0].Trim());
+                            DateTime reservedEndTime = DateTime.Parse(reservedTimeParts[1].Trim());
+
+                            if ((currentTime <= reservedStartTime && reservedStartTime < currentTimeSpent) || (currentTime < reservedEndTime && reservedEndTime <= currentTimeSpent))
+                            {
+                                currentTime = currentTime.AddMinutes(15);
+                                currentTimeSpent = currentTimeSpent.AddMinutes(15);
+                            }
+                            else
+                            {
+                                string timeSlot = currentTime.ToString("HH:mm") + " - " + currentTimeSpent.ToString("HH:mm");
+                                timeSlots.Add(timeSlot);
+                                currentTime = currentTime.AddMinutes(15);
+                                currentTimeSpent = currentTimeSpent.AddMinutes(15);
+                            }
+                        }
+
                     }
                     else
                     {
+                        string timeSlot = currentTime.ToString("HH:mm") + " - " + currentTimeSpent.ToString("HH:mm");
+                        timeSlots.Add(timeSlot);
                         currentTime = currentTime.AddMinutes(15);
+                        currentTimeSpent = currentTimeSpent.AddMinutes(15);
                     }
+                }
+                else
+                {
+                    currentTime = currentTime.AddMinutes(15);
+                    currentTimeSpent = currentTimeSpent.AddMinutes(15);
                 }
             }
 
             return timeSlots;
         }
-
 
 
         private List<string> RemoveReservedTimeSlots(List<string> timeSlots, List<string> reservedTimeSlots)
