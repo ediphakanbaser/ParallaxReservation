@@ -9,7 +9,7 @@
         else
         {
             <a href="@Url.Action("Index", "Home")">
-                <div>@Session["UsernameSS"]</div>
+                <div id="usernameDiv">@Session["UsernameSS"]</div>
             </a>
         }
 
@@ -33,7 +33,7 @@
         @if (Session["UsernameSS"] != null)
         {
             <li><a href="@Url.Action("Reservation", "Reservation")">Randevu</a></li>
-            <li><a href="@Url.Action("Review", "Home")">Görüşler</a></li>
+            <li><a href="@Url.Action("Testimonial", "Testimonial")">Değerlendirme</a></li>
             <li><a href="@Url.Action("Logout", "Home")">Çıkış Yap</a></li>
 
 

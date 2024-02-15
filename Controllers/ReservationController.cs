@@ -6,10 +6,12 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Remoting.Contexts;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Management;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+
 
 namespace Parallax.Controllers
 {
@@ -64,6 +66,7 @@ namespace Parallax.Controllers
                               where s.ServiceID == selectedServiceId
                               select new
                               {
+                                  s.EmployeeServiceID,
                                   e.EmployeeID,
                                   e.EmpName,
                                   e.EmpSurname,
@@ -78,13 +81,15 @@ namespace Parallax.Controllers
                     EmployeeTimeSlots employeeTimeSlots = new EmployeeTimeSlots
                     {
                         EmployeeID = employee.EmployeeID,
+                        EmployeeServiceID = employee.EmployeeServiceID,
                         ReservedTimeSlots = new List<string>(),
                         FinalTimeSlots = new List<string>(),
-                        
+
                     };
 
                     var reservations = context.TBLRESERVATIONs
                         .Where(r => r.SKILL.EmployeeID == employee.EmployeeID && DbFunctions.TruncateTime(r.ReserveDateTime.Value) == parsedDate.Date)
+                        .OrderBy(r => r.ReserveDateTime)
                         .Select(r => new { r.ReserveDateTime, r.ServiceEndDateTime })
                         .ToList();
 
@@ -95,7 +100,6 @@ namespace Parallax.Controllers
                     }
 
                     List<string> timeSlots = GenerateTimeSlots(
-                        timeModel,
                         DateTime.Parse(timeModel.FormattedWorkStartTime),
                         DateTime.Parse(timeModel.FormattedBreakStartTime),
                         DateTime.Parse(timeModel.FormattedBreakEndTime),
@@ -104,8 +108,7 @@ namespace Parallax.Controllers
                         employeeTimeSlots.ReservedTimeSlots
                     );
 
-                    List<string> finalTimeSlots = RemoveReservedTimeSlots(timeSlots, employeeTimeSlots.ReservedTimeSlots);
-                    employeeTimeSlots.FinalTimeSlots.AddRange(finalTimeSlots);
+                    employeeTimeSlots.FinalTimeSlots.AddRange(timeSlots);
                     finalTimeSlotsCounts.Add(employeeTimeSlots.FinalTimeSlots.Count);
                     employeeTimeSlotsList.Add(employeeTimeSlots);
                 }
@@ -120,70 +123,163 @@ namespace Parallax.Controllers
 
 
         // GenerateTimeSlots fonksiyonunu TimeViewModel parametresi ile güncelle
-        private List<string> GenerateTimeSlots(TimeViewModel timeModel, DateTime workStartTime, DateTime breakStartTime, DateTime breakEndTime, DateTime workEndTime, TimeSpan selectedTimeSpent, List<string> reservedTimeSlots)
+        private List<string> GenerateTimeSlots(DateTime workStartTime, DateTime breakStartTime, DateTime breakEndTime, DateTime workEndTime, TimeSpan selectedTimeSpent, List<string> reservedTimeSlots)
         {
             List<string> timeSlots = new List<string>();
-            TimeSpan breakTime = breakEndTime - breakStartTime;
-            int breakT = (int)breakTime.TotalMinutes;
-            DateTime currentTime = workStartTime;
-            TimeSpan timeSpent = selectedTimeSpent; // ViewModelTimeSpent'i burada al
-            DateTime currentTimeSpent = currentTime.Add(timeSpent);
+            DateTime slotStartTime = workStartTime;
+            DateTime slotEndTime = slotStartTime.Add(selectedTimeSpent);
 
-            while (currentTime < workEndTime)
+            while (IsWorkTime(workStartTime, workEndTime, slotStartTime, slotEndTime))
             {
-                while ((currentTime < breakStartTime && currentTimeSpent > breakStartTime) || (currentTime >= breakStartTime && currentTimeSpent < breakEndTime) || (currentTime < breakEndTime && currentTimeSpent >= breakEndTime))
-
+                if (IsOnBreak(breakStartTime, breakEndTime, slotStartTime, slotEndTime))
                 {
-                    currentTime = breakEndTime;
-                    currentTimeSpent = currentTime.Add(timeSpent);
+                    slotStartTime = breakEndTime;
+                    slotEndTime = slotStartTime.Add(selectedTimeSpent);
                 }
-                if (currentTimeSpent <= breakStartTime || (currentTimeSpent > breakEndTime && currentTimeSpent <= workEndTime))
+                else
                 {
                     if (reservedTimeSlots.Count != 0)
                     {
                         foreach (string reservedTimeSlot in reservedTimeSlots)
                         {
                             string[] reservedTimeParts = reservedTimeSlot.Split('-');
-                            DateTime reservedStartTime = DateTime.Parse(reservedTimeParts[0].Trim());
-                            DateTime reservedEndTime = DateTime.Parse(reservedTimeParts[1].Trim());
+                            DateTime reservedStartTime = DateTime.ParseExact(reservedTimeParts[0].Trim(), "HH:mm", CultureInfo.InvariantCulture);
+                            DateTime reservedEndTime = DateTime.ParseExact(reservedTimeParts[1].Trim(), "HH:mm", CultureInfo.InvariantCulture);
 
-                            if ((currentTime <= reservedStartTime && reservedStartTime < currentTimeSpent) || (currentTime < reservedEndTime && reservedEndTime <= currentTimeSpent))
+                            if (IsConflict(reservedStartTime, slotStartTime, slotEndTime, reservedEndTime))
                             {
-                                currentTime = currentTime.AddMinutes(15);
-                                currentTimeSpent = currentTimeSpent.AddMinutes(15);
+                                slotStartTime = reservedEndTime;
+                                slotEndTime = slotStartTime.Add(selectedTimeSpent);
+                                break;
                             }
                             else
                             {
-                                string timeSlot = currentTime.ToString("HH:mm") + " - " + currentTimeSpent.ToString("HH:mm");
+                                string timeSlot = slotStartTime.ToString("HH:mm") + " - " + slotEndTime.ToString("HH:mm");
                                 timeSlots.Add(timeSlot);
-                                currentTime = currentTime.AddMinutes(15);
-                                currentTimeSpent = currentTimeSpent.AddMinutes(15);
+                                slotStartTime = slotStartTime.AddMinutes(15);
+                                slotEndTime = slotEndTime.AddMinutes(15);
                             }
                         }
-
                     }
                     else
                     {
-                        string timeSlot = currentTime.ToString("HH:mm") + " - " + currentTimeSpent.ToString("HH:mm");
+                        string timeSlot = slotStartTime.ToString("HH:mm") + " - " + slotEndTime.ToString("HH:mm");
                         timeSlots.Add(timeSlot);
-                        currentTime = currentTime.AddMinutes(15);
-                        currentTimeSpent = currentTimeSpent.AddMinutes(15);
+                        slotStartTime = slotStartTime.AddMinutes(15);
+                        slotEndTime = slotEndTime.AddMinutes(15);
                     }
                 }
-                else
-                {
-                    currentTime = currentTime.AddMinutes(15);
-                    currentTimeSpent = currentTimeSpent.AddMinutes(15);
-                }
-            }
 
+            }
             return timeSlots;
         }
 
-
-        private List<string> RemoveReservedTimeSlots(List<string> timeSlots, List<string> reservedTimeSlots)
+        private bool IsConflict(DateTime reservedStartTime, DateTime slotStartTime, DateTime slotEndTime, DateTime reservedEndTime)
         {
-            return timeSlots.Except(reservedTimeSlots).ToList();
+            return reservedStartTime < slotEndTime && slotEndTime <= reservedEndTime ||
+                   reservedStartTime <= slotStartTime && slotStartTime < reservedEndTime ||
+                   slotStartTime <= reservedStartTime && reservedEndTime <= slotEndTime ||
+                   slotStartTime <= reservedStartTime && reservedEndTime <= slotEndTime;
         }
+
+        private bool IsOnBreak(DateTime breakStartTime, DateTime breakEndTime, DateTime slotStartTime, DateTime slotEndTime)
+        {
+            return (breakStartTime < slotEndTime && slotEndTime <= breakEndTime) ||
+                   (breakStartTime <= slotStartTime && slotStartTime < breakEndTime) ||
+                   (slotStartTime >= breakStartTime && slotEndTime <= breakEndTime) ||
+                   (slotStartTime <= breakStartTime && slotEndTime >= breakEndTime);
+        }
+
+        private bool IsWorkTime(DateTime workStartTime, DateTime workEndTime, DateTime slotStartTime, DateTime slotEndTime)
+        {
+            return workStartTime <= slotStartTime && slotEndTime <= workEndTime;
+        }
+
+
+        [HttpPost]
+        public JsonResult SaveReservation(string username, string reserveDate, int employeeServiceId, string reserveTime, string serviceTime)
+        {
+            try
+            {
+                // Gelen verileri kullanarak rezervasyon nesnesi oluşturun
+                int userId = GetUserId(username); // GetUserId metodunu kullanarak userId alınır
+                bool isUserId = userId > 0 ? true : false;
+
+                if (isUserId)
+                {
+                    // Gelen tarih string'ini DateTime nesnesine çevir
+                    var serverTime = GetServerTime();
+                    DateTime reserveDateTime = DateTime.ParseExact(reserveDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    string reserverTimeTrimmed = reserveTime.Trim();
+                    string combinedReserveTime = $"{reserveDate} {reserverTimeTrimmed}";
+                    string serviceTimeTrimmed = serviceTime.Trim();
+                    string combinedServiceTime = $"{reserveDate} {serviceTimeTrimmed}";
+
+
+                    DateTime serviceTimeParsed = DateTime.ParseExact(combinedServiceTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+                    DateTime reserveTimeParsed = DateTime.ParseExact(combinedReserveTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+
+
+                    // Rezervasyon nesnesi oluştur
+                    var reservation = new TBLRESERVATION
+                    {
+                        UserID = userId,
+                        EmployeeServiceID = employeeServiceId,
+                        RecordDateTime = serverTime,
+                        ReserveDateTime = reserveTimeParsed,
+                        ServiceEndDateTime = serviceTimeParsed,
+                        // Diğer alanları da gerekirse doldurun
+                    };
+
+                    // Veritabanına rezervasyonu ekleyin
+                    context.TBLRESERVATIONs.Add(reservation);
+                    context.SaveChanges();
+
+                    return Json(new { success = true, message = "Rezervasyon başarıyla kaydedildi." });
+
+                }
+                return Json(new { success = false, message = "Kullanıcı bulunamadı." });
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda kullanıcıya bilgi verin
+                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
+            }
+        }
+
+        public int GetUserId(string username)
+        {
+            try
+            {
+                var user = context.TBLUSERs.FirstOrDefault(u => u.Username == username);
+                if (user != null)
+                {
+                    // Gelen veriyi JSON formatında geri döndür
+                    return user.UserID;
+                }
+                else
+                {
+                    // Kullanıcı bulunamazsa hata durumunda -1 döndürmek gibi bir strateji izleyebilirsiniz.
+                    // Veya isteğe bağlı olarak bir istisna fırlatabilirsiniz.
+                    return -1;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda kullanıcıya bilgi verin veya uygun bir değeri döndürün
+                Console.WriteLine("Bir hata oluştu: " + ex.Message);
+                return -1;
+            }
+        }
+
+        public DateTime GetServerTime()
+        {
+            DateTime serverTime = DateTime.UtcNow.AddHours(3);
+            return serverTime;
+        }
+
+
+
     }
 }

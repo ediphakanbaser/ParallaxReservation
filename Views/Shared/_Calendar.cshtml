@@ -25,7 +25,10 @@
                 </select>
 
             </div>
-
+            <div class="vertical-box">
+                <button id="reservationSave">Rezervasyon Oluştur</button>
+            </div>
+            
         </div>
     </div>
     <div class="reservation-list">
@@ -56,7 +59,9 @@
 <script>
     $(document).ready(function () {
 
-        $('#serviceSelect').change(function () {
+        
+
+        $("#serviceSelect").on("change", function () {
             var selectedDateTime = $("#datepicker-input").val();
             var selectedOption = $("#serviceSelect option:selected");
             var selectedTimeSpent = selectedOption.length > 0 ? selectedOption.data("timespent") : null;
@@ -89,7 +94,7 @@
                             employeeList.empty();
 
                             $.each(result.employees, function (index, employee) {
-                                var employeeDiv = $('<div class="calendar-cards"><div class="worker-img" style="background-image: url(' + employee.EmpImageURL + ')"></div><div class="reservation-info"><h2>' + employee.EmpName + " " + employee.EmpSurname + '</h2><div class="timelinebox"><div class="timeline-left"></div><div class="timeline-right"></div></div></div></div>');
+                                var employeeDiv = $('<div class="calendar-cards"><div class="worker-img" style="background-image: url(' + employee.EmpImageURL + ')"></div><div class="reservation-info"><h2>' + employee.EmpName + " " + employee.EmpSurname + '</h2><div class="timelinebox"><div class="timeline-left"><fieldset id="field1"></fieldset></div><div class="timeline-right"><fieldset id="field2"></fieldset></div></div></div></div>');
 
                                 // Her çalışan için FinalTimeSlots'ları al
                                 var finalTimeSlots = result.timeSlotsList[index].FinalTimeSlots;
@@ -101,12 +106,12 @@
                                 if (finalTimeSlotsCount > 0) {
                                     // 0'dan count/2'ye kadar olan indexler için timeline-left sınıfını ekle
                                     for (var i = 0; i < Math.floor(finalTimeSlotsCount / 2); i++) {
-                                        employeeDiv.find('.timeline-left').append('<p>' + finalTimeSlots[i] + '</p>');
+                                        employeeDiv.find('#field1').append('<div><input type="radio" id="' + [i] + '" name="option" value="' + employee.EmployeeServiceID+ '"><label for="' + finalTimeSlots[i] +'" > '+ finalTimeSlots[i] +'</label></div>');
                                     }
 
                                     // count/2'den count'e kadar olan indexler için timeline-right sınıfını ekle
                                     for (var j = Math.floor(finalTimeSlotsCount / 2); j < finalTimeSlotsCount; j++) {
-                                        employeeDiv.find('.timeline-right').append('<p>' + finalTimeSlots[j] + '</p>');
+                                        employeeDiv.find('#field2').append('<div><input type="radio" id="' + [i + j] + '" name="option" value="' + employee.EmployeeServiceID + '"><label for="' + finalTimeSlots[j] + '">' + finalTimeSlots[j] + '</label></div>');
                                     }
                                 }
 
@@ -122,12 +127,53 @@
                     // Hata durumunda genel bir mesaj gösterin
                     alert("Bir hata oluştu.");
                     },
-                    
+
                 });
 
             }
         });
 
+    });
+
+    $('#reservationSave').on('click', function () {
+        var selectedDateTime = $("#datepicker-input").val();
+        var selectedTime = $('input[name="option"]:checked').next('label').text();
+        var employeeId = $("input[name='option']:checked").val();
+
+        if (!selectedTime) {
+            alert("Lütfen bir zaman aralığı seçin.");
+            return;
+        }
+
+        // Diğer gerekli bilgileri alıyoruz
+        var reservationData = {
+            username: "@Session["UsernameSS"]", // Bu Session bilgisini kullanıcı oturumu açıkken alınan bilgi olarak düşündüm
+            reserveDate: selectedDateTime,
+            employeeServiceId: employeeId,
+            reserveTime: selectedTime.split(' - ')[0],
+            serviceTime: selectedTime.split(' - ')[1]
+        };
+
+        // Controller'a JSON nesnesini göndermek için AJAX isteği yap
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SaveReservation", "Reservation")',
+            data: reservationData,
+            success: function (result) {
+                if (result.success) {
+                    // Başarılı durumda kullanıcıya bilgi verin veya başka bir işlem yapın
+                    alert("Rezervasyon başarıyla kaydedildi.");
+                    window.location.href = '/Reservation/Reservation'
+                } else {
+                    // Hata durumunda kullanıcıya bilgi verin
+                    alert(result.message);
+                }
+            },
+            error: function () {
+                // Hata durumunda genel bir mesaj gösterin
+                alert("Bir hata oluştu.");
+            }
+        });
     });
 </script>
 

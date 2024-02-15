@@ -12,14 +12,14 @@
 
 .calendar {
     position: sticky;
-    top:22vh;    
+    top: 22vh;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
     flex-wrap: wrap;
     width: 400px;
-    height: 400px;
+    height: auto;
 }
 
     .calendar .ui-widget {
@@ -49,12 +49,10 @@
 }
 
 .choice-box {
-    
     width: 400px;
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: flex-start;
-    
 }
 
 #datepicker-input {
@@ -63,7 +61,7 @@
     text-align: end;
     border: none;
     border-bottom: 1px solid black;
-    text-align:justify-all;
+    text-align: justify-all;
 }
 
     #datepicker-input:focus {
@@ -92,10 +90,11 @@
     border-bottom: 1px solid black;
     outline-offset: 0px;
     outline: none;
-    text-align:end;
-    font-weight:bold;
+    text-align: end;
+    font-weight: bold;
 }
-.reservation-list {    
+
+.reservation-list {
     padding-left: 50px;
     padding-right: 50px;
     position: relative;
@@ -104,12 +103,12 @@
     flex-direction: column;
 }
 
-.calendar-cards {    
+.calendar-cards {
     height: 500px;
     width: calc(100% - 100px);
     margin-bottom: 15px;
     display: flex;
-    border:5px solid #ae1622;
+    border: 5px solid #ae1622;
 }
 
 .worker-img {
@@ -118,7 +117,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     height: 500px;
-    width: 400px;    
+    width: 400px;
     border-right: 5px solid #ae1622;
 }
 
@@ -130,17 +129,19 @@
         display: flex;
         justify-content: center;
         border-bottom: 5px solid #ae1622;
+        font-size: 50px;
     }
 
 .timelinebox {
     display: flex;
-    height: calc(485px - 1.5em);
+    height: calc(500px - 60px);
 }
+
 .timeline-right {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    height: calc(485px - 1.5em);
+    height: calc(500px - 60px);
     width: 50%;
     justify-content: center;
     align-items: center;
@@ -151,12 +152,36 @@
     flex-direction: column;
     flex-wrap: wrap;
     width: 50%;
-    height: calc(485px - 1.5em);
+    height: calc(500px - 60px);
     justify-content: center;
     align-items: center;
 }
+
 .p-box {
-    padding-top:25px;
-    text-align:center;
+    padding-top: 25px;
+    text-align: center;
+}
+
+.fieldset {
+    display: flex;
+    justify-content: center;
+}
+
+#field1 div, #field2 div {
+    margin-bottom: 5px;
+}
+
+    #field1 div label, #field2 div  label {        
+        font-size: 18px;
+    }
+
+#field1, #field2 {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    height: auto;
+    align-content: space-around;
+    border: none;
 }
 /* CALENDAR END */
