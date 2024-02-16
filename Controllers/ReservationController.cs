@@ -149,27 +149,18 @@ namespace Parallax.Controllers
                             if (IsConflict(reservedStartTime, slotStartTime, slotEndTime, reservedEndTime))
                             {
                                 slotStartTime = reservedEndTime;
-                                slotEndTime = slotStartTime.Add(selectedTimeSpent);
-                                break;
-                            }
-                            else
-                            {
-                                string timeSlot = slotStartTime.ToString("HH:mm") + " - " + slotEndTime.ToString("HH:mm");
-                                timeSlots.Add(timeSlot);
-                                slotStartTime = slotStartTime.AddMinutes(15);
-                                slotEndTime = slotEndTime.AddMinutes(15);
-                            }
+                                slotEndTime = slotStartTime.Add(selectedTimeSpent);                                
+                            }                            
                         }
                     }
-                    else
+                    if (IsWorkTime(workStartTime, workEndTime, slotStartTime, slotEndTime))
                     {
                         string timeSlot = slotStartTime.ToString("HH:mm") + " - " + slotEndTime.ToString("HH:mm");
                         timeSlots.Add(timeSlot);
                         slotStartTime = slotStartTime.AddMinutes(15);
                         slotEndTime = slotEndTime.AddMinutes(15);
-                    }
+                    }                                           
                 }
-
             }
             return timeSlots;
         }
