@@ -21,6 +21,7 @@
     margin-right: 1vw;
     margin-top: 1vw;
     width: 21.359vw;
+   
 }
 
 
@@ -44,9 +45,12 @@
         font-size: 25px;
     }
 
+.worker:hover {
+    filter: saturate(1.5);
+}
 .worker:hover .worker-info {
     display: block;
-    background-color: rgba(69, 69, 69, 0.25);
+
 }
 
 /* WORKER END */

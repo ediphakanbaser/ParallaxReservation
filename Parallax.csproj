@@ -107,6 +107,7 @@
     <Content Include="Content\css\preloader.css" />
     <Content Include="Content\css\scrollbar.css" />
     <Content Include="Content\css\slider.css" />
+    <Content Include="Content\css\testimonial.css" />
     <Content Include="Content\css\worker.css" />
     <Content Include="Content\css\wpme.css" />
     <Content Include="Content\images\antiaging.jpg" />
@@ -145,6 +146,7 @@
     <Content Include="Content\images\sacboyama.jpg" />
     <Content Include="Content\images\sacdokulmesi.jpg" />
     <Content Include="Content\images\sackesimi.jpg" />
+    <Content Include="Content\images\womanavatar.jpg" />
     <Content Include="Content\images\work-1.jpg" />
     <Content Include="Content\images\work-2.jpg" />
     <Content Include="Content\images\work-3.jpg" />
@@ -156,10 +158,11 @@
     <Content Include="Content\images\work-9.jpg" />
     <Content Include="Content\images\wp.png" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\js\calendar.js" />
+    <Content Include="Scripts\js\datepicker.js" />
     <Content Include="Scripts\js\preloader.js" />
     <Content Include="Scripts\js\sidebuttons.js" />
     <Content Include="Scripts\js\slider.js" />
+    <Content Include="Scripts\js\testimonial.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +225,7 @@
     <Content Include="Views\Reservation\Reservation.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Testimonial\Testimonial.cshtml" />
+    <Content Include="Views\Shared\_Testimonials.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
