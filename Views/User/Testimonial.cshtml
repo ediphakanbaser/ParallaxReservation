@@ -1,0 +1,181 @@
+﻿@model Parallax.Models.TestimonialsViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="testimonial-div">
+    <div class="content-title">DEĞERLENDİRME</div>
+    <div class="table">
+        <table border width="100%">
+
+
+            <tr>
+                <th rowspan="2" id="selection-row">Seçim</th>
+                <th colspan="3">Tarih bilgisi</th>
+                <th colspan="2">Hizmet Bilgisi</th>
+
+            </tr>
+            <tr>
+                <th class="date-row">Gün</th>
+                <th class="time-row">Başlangıç Zamanı</th>
+                <th class="time-row">Bitiş Zamanı</th>
+                <th class="service-row">Personel İsmi</th>
+                <th class="service-row">Hizmet İsmi</th>
+
+            </tr>
+            @foreach (var item in Model.ReservationModels)
+            {
+                if (item.ReviewID == null && item.ReserveDateTime.HasValue && item.ServiceEndDateTime.HasValue &&
+         item.ReserveDateTime.Value.Date == item.ServiceEndDateTime.Value.Date)
+                {
+                    <tr>
+                        @if (item.ServiceEndDateTime <= DateTime.UtcNow.AddHours(3))
+                        {
+                            <td style="background-color:green">
+                                <input type="radio" name="options" value="@item.ReservationID">
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="background-color:red">
+                                <input type="radio" name="options" value="@item.ReservationID" disabled>
+                            </td>
+                        }
+                        <td>
+                            @item.ReserveDateTime.Value.ToString("dd.MM.yyyy")
+                        </td>
+
+                        <td>
+                            @item.ReserveDateTime.Value.ToString("HH:mm")
+                        </td>
+
+
+                        <td>
+                            @item.ServiceEndDateTime.Value.ToString("HH:mm")
+                        </td>
+                        <td>
+                            @item.SKILL.TBLEMPLOYEE.EmpName @item.SKILL.TBLEMPLOYEE.EmpSurname
+                        </td>
+                        <td>
+                            @item.SKILL.TBLSERVICE.ServiceName
+                        </td>
+
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+
+    <textarea class="feedback" maxlength="500"></textarea>
+    <div id="the-count">
+        <span id="current">0</span>
+        <span id="maximum">/ 500</span>
+    </div>
+    <div class="row-rewiev">
+        <div class="point-row">
+            Seçilen Hizmete Verilen Puan:
+            <select class="rating-review">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </div>
+        <button class="save-review">Görüşü Kaydet</button>
+    </div>
+</div>
+
+<script>
+    // Sayfa yüklendiğinde çalışacak kodları DOMContentLoaded olayına bağlayın
+    document.addEventListener('DOMContentLoaded', function () {
+        var textarea = document.querySelector('.feedback');
+        var current = document.getElementById('current');
+        var maximum = document.getElementById('maximum');
+        var theCount = document.getElementById('the-count');
+
+        // Güvenlik kontrolü: Belirtilen öğelerin varlığını kontrol et
+        if (textarea && current && maximum && theCount) {
+            textarea.addEventListener('input', function () {
+                var characterCount = this.value.length;
+
+                current.textContent = characterCount;
+
+                // Renk değişiklikleri
+                if (characterCount < 50) {
+                    current.style.color = '#00ff00';
+                } else if (characterCount < 100) {
+                    current.style.color = '#bfff00';
+                } else if (characterCount < 200) {
+                    current.style.color = '#ffff00';
+                } else if (characterCount < 300) {
+                    current.style.color = '#ff8000';
+                } else if (characterCount < 400) {
+                    current.style.color = '#ff0000';
+                }
+
+                // Karakter sınırına ulaşıldığında stil değişiklikleri
+                if (characterCount >= 400) {
+                    maximum.style.color = '#ff0000';
+                    current.style.color = '#ff0000';
+                    theCount.style.fontWeight = 'bold';
+                } else {
+                    maximum.style.color = '#00ff00';
+                    theCount.style.fontWeight = 'normal';
+                }
+            });
+        } else {
+            console.error('Gerekli HTML öğeleri bulunamadı.');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var selectedReservationId; // Değişkeni tanımla
+
+        // Radio butonları için change olayını dinle
+        $('input[type="radio"]').on('change', function () {
+            if (this.checked) {
+                selectedReservationId = this.value;
+            }
+        });
+
+        $('.save-review').on('click', function () {
+            var comment = $('.feedback').val();
+            var rating = $('.rating-review').val();
+
+            // AJAX çağrısı ile değerlendirmeyi Controller'a gönder
+            $.ajax({
+                type: 'POST',
+                url: '/User/SubmitReview', // Controller adınızı ve URL'yi uygun şekilde güncelleyin
+                data: {
+                    reservationId: selectedReservationId,
+                    comment: comment,
+                    rating: rating
+                },
+                success: function (data) {
+                    // Başarılı bir şekilde değerlendirme gönderildiyse modal'ı kapatabilirsiniz
+                    $('#alert-message').text("Değerlendirmeniz onaya gönderildi.").show();
+
+                    // ReviewStatus'u 0 yapmak için ilgili rezervasyonu güncelle
+                    $.ajax({
+                        type: 'POST',
+                        url: '/User/UpdateReviewStatus', // Uygun URL'yi güncelleyin
+                        data: {
+                            reservationId: selectedReservationId
+                        },
+                        success: function () {
+                            console.log('ReviewStatus güncellendi.');
+                        },
+                        error: function () {
+                            console.error('ReviewStatus güncellenemedi.');
+                        }
+                    });
+                },
+                error: function () {
+                    console.error('Değerlendirme gönderilemedi.');
+                    $('#alert-message').text("Değerlendirme gönderilemedi.").show();
+                }
+            });
+        });
+    });
+</script>

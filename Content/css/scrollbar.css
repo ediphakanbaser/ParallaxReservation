@@ -10,5 +10,6 @@
 
 ::-webkit-scrollbar-thumb {
     background: #ae1622;
+    border-radius: 4px;
 }
 /* SCROLLBAR END */

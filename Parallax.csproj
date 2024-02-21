@@ -107,7 +107,7 @@
     <Content Include="Content\css\preloader.css" />
     <Content Include="Content\css\scrollbar.css" />
     <Content Include="Content\css\slider.css" />
-    <Content Include="Content\css\testimonial.css" />
+    <Content Include="Content\css\partial_testi.css" />
     <Content Include="Content\css\worker.css" />
     <Content Include="Content\css\wpme.css" />
     <Content Include="Content\images\antiaging.jpg" />
@@ -167,9 +167,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Content\css\page_testi.css" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
-    <Compile Include="Controllers\TestimonialController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -177,6 +178,7 @@
     <Compile Include="Models\EmployeeTimeSlots.cs" />
     <Compile Include="Models\EmpService.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
+    <Compile Include="Models\LayoutViewModel.cs" />
     <Compile Include="Models\PaketHizmet.cs" />
     <Compile Include="Models\ParallaxContext.cs" />
     <Compile Include="Models\ReservationInfo.cs" />
@@ -191,6 +193,7 @@
     <Compile Include="Models\TBLSERVICE.cs" />
     <Compile Include="Models\TBLUSER.cs" />
     <Compile Include="Models\TekilHizmetler.cs" />
+    <Compile Include="Models\TestimonialsViewModel.cs" />
     <Compile Include="Models\TimeInfo.cs" />
     <Compile Include="Models\TimeViewModel.cs" />
     <Compile Include="Models\TYPE.cs" />
@@ -224,8 +227,8 @@
     <Content Include="Views\Shared\_JqueryCalendar.cshtml" />
     <Content Include="Views\Reservation\Reservation.cshtml" />
     <None Include="packages.config" />
-    <Content Include="Views\Testimonial\Testimonial.cshtml" />
     <Content Include="Views\Shared\_Testimonials.cshtml" />
+    <Content Include="Views\User\Testimonial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -7,18 +7,14 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 
-namespace Parallax.Controllers
-{
+namespace Parallax.Controllers{
     public class HomeController : Controller
     {
-
         private readonly ParallaxContext context;
-
 
         public HomeController()
         {
             context = new ParallaxContext();
-
         }
         public ActionResult Index()
         {
@@ -26,7 +22,6 @@ namespace Parallax.Controllers
             List<TekilHizmetler> serviceModels = context.TekilHizmetlers.ToList();
             List<TBLEMPLOYEE> employeeModels = context.TBLEMPLOYEEs.ToList();
             List<PaketHizmet> packageModels = context.PaketHizmets.ToList();
-
             TimeViewModel timeModel = TimeModelHelper.GetTimeModel(pageModel);
 
             IndexViewModel indexModel = new IndexViewModel
@@ -36,10 +31,7 @@ namespace Parallax.Controllers
                 EmployeeModels = employeeModels,
                 PackageModels = packageModels,
                 TimeModel = timeModel
-            };         
-
-            
-
+            };
             return View(indexModel);
         }
         
@@ -51,20 +43,18 @@ namespace Parallax.Controllers
         [HttpPost]
         public ActionResult Signup(TBLUSER tbluser)
         {
-            if (ModelState.IsValid) // ModelState kontrolü eklenmiştir
+            if (ModelState.IsValid)
             {
                 if (context.TBLUSERs.Any(x => x.Username == tbluser.Username))
                 {
                     ViewBag.NotificationUsername = "Kullanıcı ismi mevcut. Farklı bir kullanıcı ismi deneyiniz.";
                     return View(tbluser);
-
                 }
-
                 else
                 {
                     tbluser.CreationDate = DateTime.Now;
                     tbluser.RoleID = 2;
-                    tbluser.UserImageURL = null;
+                    tbluser.UserImageURL = "/Content/images/womanavatar.jpg";
                     context.TBLUSERs.Add(tbluser);
                     context.SaveChanges();
 
@@ -76,8 +66,6 @@ namespace Parallax.Controllers
             }
             else
             {
-                // ModelState geçerli değilse, validation hatası var demektir.
-                // Hata mesajları kullanıcıya gösterilebilir veya istediğiniz şekilde ele alınabilir.
                 return View(tbluser);
             }
         }
@@ -120,7 +108,6 @@ namespace Parallax.Controllers
                 PageModel = pageModel,
                 TimeModel = timeModel
             };
-
             
             return View(aboutModel);
         }
@@ -151,11 +138,8 @@ namespace Parallax.Controllers
                 EmployeeModels = employeeModels,
                 TimeModel = timeModel
             };
-
-       
+            
             return View(employeeModel);
-        }
-
-        
+        }      
     }
 }

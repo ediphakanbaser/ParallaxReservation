@@ -11,21 +11,16 @@ namespace Parallax.Helpers
     {        
         public static TimeViewModel GetTimeModel(TBLPAGE pageModel)
         {
-            // Zaman bilgilerini oluşturacak işlemleri gerçekleştirin
             TimeSpan workStartTime = pageModel.WorkStartTime;
             TimeSpan breakStartTime = pageModel.BreakStartTime;
             TimeSpan breakEndTime = pageModel.BreakEndTime;
             TimeSpan workEndTime = pageModel.WorkEndTime;
             
-
-            // FormatTimeSpan metodunu kullanarak her bir TimeSpan'i string formatına çeviriyoruz
             string formattedWorkStartTime = FormatTimeSpan(workStartTime);
             string formattedBreakStartTime = FormatTimeSpan(breakStartTime);
             string formattedBreakEndTime = FormatTimeSpan(breakEndTime);
             string formattedWorkEndTime = FormatTimeSpan(workEndTime);
             
-
-            // Oluşturduğumuz string formatındaki zamanları TimeViewModel içinde kullanabiliriz
             TimeViewModel timeModel = new TimeViewModel
             {
                 FormattedWorkStartTime = formattedWorkStartTime,
@@ -33,7 +28,6 @@ namespace Parallax.Helpers
                 FormattedBreakEndTime = formattedBreakEndTime,
                 FormattedWorkEndTime = formattedWorkEndTime
             };
-
             return timeModel;
         }
 
@@ -41,10 +35,10 @@ namespace Parallax.Helpers
         {
             DateTime today = DateTime.Today;
             DateTime timeModel = today.Add(timeSpan);
-
             return timeModel.ToString("HH:mm");
-        }
+        }        
     }
+
 
 
 }

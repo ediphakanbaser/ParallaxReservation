@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var testimonialConElement = document.querySelector('.testimonial-con');
     var indicators = document.querySelector('.comment-indicators');
     var slider = document.querySelector('.slider-con');
-    var img = document.querySelector('.customer-image');
 
 
     // Sayfanýn body baþlangýcýndan testimonial-title baþlangýcýna kadar olan uzaklýðý hesapla
@@ -36,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    var absoluteBox = document.querySelector('.absolute-box');
     var beforeButton = document.getElementById('before');
     var afterButton = document.getElementById('after');
     var commentBoxes = document.querySelectorAll('.comment-box');

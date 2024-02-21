@@ -1,0 +1,91 @@
+﻿.testimonial-div {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10vw 0 10vw;
+}
+
+.table {
+    text-align: center;
+    margin-bottom: 2vw;
+}
+
+    .table td, th {
+        padding: 5px;
+    }
+
+.table th {
+    text-align: center;
+}
+
+.table #selection-row {
+    width: 4vw;
+}
+
+.table .date-row {
+    width: 8vw;
+}
+
+.table .time-row {
+    width: 4vw;
+}
+.table .service-row {
+    width:16vw;
+}
+.table td {
+    height: 2vw;
+}
+
+.feedback {
+    width: 55vw;
+    height: 10vh;
+    font-size: 1vw;
+    padding: 10px;
+}
+#the-count {
+    width:70%;
+    float: right;
+    padding: 0.5rem 0 0 0;
+    font-size: 1vw;
+    text-align:end;
+}
+.row-rewiev {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.point-row{
+    display:flex;
+    flex-direction:row;
+    text-wrap:nowrap;
+    align-items:center;
+}
+
+.rating-review {
+    height:20px;
+    font-size:20px;
+    margin-left:10px;
+
+}
+
+.save-review {
+    border: solid #ae1622 2px;
+    text-decoration: none;
+    color: black;
+    background-color: transparent;
+    display: block;
+    text-align: center;
+    margin: 5px;
+    padding: 5px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 45px;
+    transition: background-color 0.5s ease-in-out;
+}
+.save-review:hover {
+    background-color: #ae1622;
+    transition: background-color 0.5s ease-in-out;
+}

@@ -184,4 +184,25 @@
     align-content: space-around;
     border: none;
 }
+
+#reservationSave {
+    width:200px;
+    margin-left:100px;
+    border: solid #ae1622 2px;
+    text-decoration: none;
+    color: black;
+    background-color: transparent;
+    display: block;
+    text-align: center;
+    padding: 5px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 45px;
+    transition: background-color 0.5s ease-in-out;
+}
+
+#reservationSave:hover {
+    background-color: #ae1622;
+    transition: background-color 0.5s ease-in-out;
+}
 /* CALENDAR END */

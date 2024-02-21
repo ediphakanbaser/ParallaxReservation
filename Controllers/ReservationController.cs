@@ -19,12 +19,10 @@ namespace Parallax.Controllers
     public class ReservationController : Controller
     {
         private readonly ParallaxContext context;
-
         public ReservationController()
         {
             context = new ParallaxContext();
         }
-
         public ActionResult Reservation()
         {
             TBLPAGE pageModel = context.TBLPAGEs.FirstOrDefault();
@@ -32,11 +30,6 @@ namespace Parallax.Controllers
             List<ServiceType> serviceType = context.ServiceTypes.ToList();
             List<TBLSERVICE> tblServices = context.TBLSERVICEs.ToList();
             List<EmpService> empService = context.EmpServices.ToList();
-
-
-
-            // RemoveReservedTimeSlots fonksiyonunu çağırarak rezerve edilen zaman dilimlerini çıkar
-
 
             ReservationViewModel reservationModel = new ReservationViewModel
             {
@@ -79,12 +72,12 @@ namespace Parallax.Controllers
                 {
                     Console.WriteLine($"EmployeeID: {employee.EmployeeID}, EmpName: {employee.EmpName}, EmpSurname: {employee.EmpSurname}, EmpImageURL: {employee.EmpImageURL}");
                     EmployeeTimeSlots employeeTimeSlots = new EmployeeTimeSlots
+
                     {
                         EmployeeID = employee.EmployeeID,
                         EmployeeServiceID = employee.EmployeeServiceID,
                         ReservedTimeSlots = new List<string>(),
                         FinalTimeSlots = new List<string>(),
-
                     };
 
                     var reservations = context.TBLRESERVATIONs
@@ -105,8 +98,7 @@ namespace Parallax.Controllers
                         DateTime.Parse(timeModel.FormattedBreakEndTime),
                         DateTime.Parse(timeModel.FormattedWorkEndTime),
                         TimeSpan.Parse(selectedTimeSpent),
-                        employeeTimeSlots.ReservedTimeSlots
-                    );
+                        employeeTimeSlots.ReservedTimeSlots);
 
                     employeeTimeSlots.FinalTimeSlots.AddRange(timeSlots);
                     finalTimeSlotsCounts.Add(employeeTimeSlots.FinalTimeSlots.Count);
@@ -121,8 +113,6 @@ namespace Parallax.Controllers
             }
         }
 
-
-        // GenerateTimeSlots fonksiyonunu TimeViewModel parametresi ile güncelle
         private List<string> GenerateTimeSlots(DateTime workStartTime, DateTime breakStartTime, DateTime breakEndTime, DateTime workEndTime, TimeSpan selectedTimeSpent, List<string> reservedTimeSlots)
         {
             List<string> timeSlots = new List<string>();
@@ -186,19 +176,16 @@ namespace Parallax.Controllers
             return workStartTime <= slotStartTime && slotEndTime <= workEndTime;
         }
 
-
         [HttpPost]
         public JsonResult SaveReservation(string username, string reserveDate, int employeeServiceId, string reserveTime, string serviceTime)
         {
             try
             {
-                // Gelen verileri kullanarak rezervasyon nesnesi oluşturun
-                int userId = GetUserId(username); // GetUserId metodunu kullanarak userId alınır
+                int userId = GetUserId(username);
                 bool isUserId = userId > 0 ? true : false;
 
                 if (isUserId)
                 {
-                    // Gelen tarih string'ini DateTime nesnesine çevir
                     var serverTime = GetServerTime();
                     DateTime reserveDateTime = DateTime.ParseExact(reserveDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                     string reserverTimeTrimmed = reserveTime.Trim();
@@ -206,34 +193,27 @@ namespace Parallax.Controllers
                     string serviceTimeTrimmed = serviceTime.Trim();
                     string combinedServiceTime = $"{reserveDate} {serviceTimeTrimmed}";
 
-
                     DateTime serviceTimeParsed = DateTime.ParseExact(combinedServiceTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
                     DateTime reserveTimeParsed = DateTime.ParseExact(combinedReserveTime, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
 
-
-                    // Rezervasyon nesnesi oluştur
                     var reservation = new TBLRESERVATION
                     {
                         UserID = userId,
                         EmployeeServiceID = employeeServiceId,
                         RecordDateTime = serverTime,
                         ReserveDateTime = reserveTimeParsed,
-                        ServiceEndDateTime = serviceTimeParsed,
-                        // Diğer alanları da gerekirse doldurun
+                        ServiceEndDateTime = serviceTimeParsed
                     };
 
-                    // Veritabanına rezervasyonu ekleyin
                     context.TBLRESERVATIONs.Add(reservation);
                     context.SaveChanges();
 
                     return Json(new { success = true, message = "Rezervasyon başarıyla kaydedildi." });
-
                 }
                 return Json(new { success = false, message = "Kullanıcı bulunamadı." });
             }
             catch (Exception ex)
             {
-                // Hata durumunda kullanıcıya bilgi verin
                 return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
             }
         }
@@ -245,20 +225,16 @@ namespace Parallax.Controllers
                 var user = context.TBLUSERs.FirstOrDefault(u => u.Username == username);
                 if (user != null)
                 {
-                    // Gelen veriyi JSON formatında geri döndür
                     return user.UserID;
                 }
                 else
                 {
-                    // Kullanıcı bulunamazsa hata durumunda -1 döndürmek gibi bir strateji izleyebilirsiniz.
-                    // Veya isteğe bağlı olarak bir istisna fırlatabilirsiniz.
                     return -1;
                 }
 
             }
             catch (Exception ex)
             {
-                // Hata durumunda kullanıcıya bilgi verin veya uygun bir değeri döndürün
                 Console.WriteLine("Bir hata oluştu: " + ex.Message);
                 return -1;
             }
@@ -269,8 +245,5 @@ namespace Parallax.Controllers
             DateTime serverTime = DateTime.UtcNow.AddHours(3);
             return serverTime;
         }
-
-
-
     }
 }
