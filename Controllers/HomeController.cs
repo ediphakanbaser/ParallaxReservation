@@ -23,15 +23,16 @@ namespace Parallax.Controllers{
             List<TBLEMPLOYEE> employeeModels = context.TBLEMPLOYEEs.ToList();
             List<PaketHizmet> packageModels = context.PaketHizmets.ToList();
             TimeViewModel timeModel = TimeModelHelper.GetTimeModel(pageModel);
-
+            List<TBLRESERVATION> reservationModels = context.TBLRESERVATIONs.ToList();
             IndexViewModel indexModel = new IndexViewModel
             {
                 PageModel = pageModel,
                 ServiceModels = serviceModels,
                 EmployeeModels = employeeModels,
                 PackageModels = packageModels,
-                TimeModel = timeModel
-            };
+                TimeModel = timeModel,
+                ReservationModels = reservationModels
+        };
             return View(indexModel);
         }
         

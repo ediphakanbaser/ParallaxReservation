@@ -11,6 +11,7 @@ namespace Parallax.Models
         public List<TekilHizmetler> ServiceModels { get; set; }
         public List<TBLEMPLOYEE> EmployeeModels { get; set; }
         public List<PaketHizmet> PackageModels { get; set; }
+        public List<TBLRESERVATION> ReservationModels { get; set; }
     }
 
 }

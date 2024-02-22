@@ -155,21 +155,7 @@
                 success: function (data) {
                     // Başarılı bir şekilde değerlendirme gönderildiyse modal'ı kapatabilirsiniz
                     $('#alert-message').text("Değerlendirmeniz onaya gönderildi.").show();
-
-                    // ReviewStatus'u 0 yapmak için ilgili rezervasyonu güncelle
-                    $.ajax({
-                        type: 'POST',
-                        url: '/User/UpdateReviewStatus', // Uygun URL'yi güncelleyin
-                        data: {
-                            reservationId: selectedReservationId
-                        },
-                        success: function () {
-                            console.log('ReviewStatus güncellendi.');
-                        },
-                        error: function () {
-                            console.error('ReviewStatus güncellenemedi.');
-                        }
-                    });
+                    window.location.href = '/User/Testimonial'                                     
                 },
                 error: function () {
                     console.error('Değerlendirme gönderilemedi.');

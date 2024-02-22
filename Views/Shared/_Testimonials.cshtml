@@ -1,54 +1,37 @@
-﻿<div class="testimonial-con">
+﻿@model Parallax.Models.IndexViewModel
+
+<div class="testimonial-con">
     <div class="content-title" id="testimonial-title">DEĞERLENDİRMELER</div>
     <div class="slider-con">
         <div class="absolute-box">
-            <div class="comment-box">
-                <div class="customer-image" style="background-image: url(/Content/images/womanavatar.jpg)"></div>
-                <q class="customer-comment">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</q>
-                <div class="underline">
-                    <div class="customername">Customer name</div>
-                    <div class="rating">5</div>
-                    <div class="names">Cilt Bakımı - Necla Konur</div>
-                </div>
-            </div>
+            @foreach (var i in Model.ReservationModels)
+            {
+                if (i.ReviewStatus == true)
+                {<div class="comment-box">
+                        @if (@i.TBLUSER.UserImageURL != null)
+                        {
+                            <div class="customer-image" style="background-image: url('@i.TBLUSER.UserImageURL')"></div>
+                            <q class="customer-comment">@i.TBLREVIEW.Comment</q>
+                            <div class="underline">
+                                <div class="customername">@i.TBLUSER.Name @i.TBLUSER.Surname</div>
+                                <div class="rating">@i.TBLREVIEW.Rating</div>
+                                <div class="names">@i.SKILL.TBLSERVICE.ServiceName - @i.SKILL.TBLEMPLOYEE.EmpName @i.SKILL.TBLEMPLOYEE.EmpSurname</div>
+                            </div>
+                        }
+                        else
+                        { <q class="customer-comment" style="transform:translateY(-125px)">@i.TBLREVIEW.Comment</q>
+                        <div class="underline" style="transform:translateY(-125px)">
+                            <div class="customername">@i.TBLUSER.Name @i.TBLUSER.Surname</div>
+                            <div class="rating">@i.TBLREVIEW.Rating</div>
+                            <div class="names">@i.SKILL.TBLSERVICE.ServiceName - @i.SKILL.TBLEMPLOYEE.EmpName @i.SKILL.TBLEMPLOYEE.EmpSurname</div>
+                        </div>}
 
-            <div class="comment-box">
-                <div class="customer-image" style="background-image: url(/Content/images/womanavatar.jpg)"></div>
-                <q class="customer-comment">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</q>
-                <div class="underline">
-                    <div class="customername">Customer name</div>
-                    <div class="rating">5</div>
-                    <div class="names">Cilt Bakımı - Necla Konur</div>
-                </div>
-            </div>
-
-            <div class="comment-box">
-                <div class="customer-image" style="background-image: url(/Content/images/womanavatar.jpg)"></div>
-                <q class="customer-comment">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</q>
-                <div class="underline">
-                    <div class="customername">Customer name</div>
-                    <div class="rating">5</div>
-                    <div class="names">Cilt Bakımı - Necla Konur</div>
-                </div>
-            </div>
-
-            <div class="comment-box">
-                <div class="customer-image" style="background-image: url(/Content/images/womanavatar.jpg)"></div>
-                <q class="customer-comment">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</q>
-                <div class="underline">
-                    <div class="customername">Customer name</div>
-                    <div class="rating">5</div>
-                    <div class="names">Cilt Bakımı - Necla Konur</div>
-                </div>
-            </div>
+                    </div>}
+            }
         </div>
     </div>
-        <div class="comment-indicators">
-            <button id="before"><i class="fas fa-angle-left"></i></button>
-            <button id="after"><i class="fas fa-angle-right"></i></button>
-        </div>
-    
-
-
-
+    <div class="comment-indicators">
+        <button id="before"><i class="fas fa-angle-left"></i></button>
+        <button id="after"><i class="fas fa-angle-right"></i></button>
+    </div>
 </div>

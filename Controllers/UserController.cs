@@ -45,24 +45,22 @@ namespace Parallax.Controllers
         [HttpPost]
         public ActionResult SubmitReview(int reservationId, string comment, int rating)
         {
-
             try
             {
                 // ReservationID'ye ait bir review zaten var mı kontrol et
                 var existingReview = context.TBLRESERVATIONs
                     .Where(r => r.ReservationID == reservationId)
-                    .Select(r => r.ReviewID)
+                    .Select(r => new { r.ReviewID, r.ReviewStatus })
                     .FirstOrDefault();
 
-                byte convertedRating = (byte)Math.Min(255, Math.Max(0, rating));
-                if (existingReview.HasValue)
+                if (existingReview != null && existingReview.ReviewID.HasValue)
                 {
                     // Eğer varsa, mevcut review'a ekle
-                    var reviewToUpdate = context.TBLREVIEWs.Find(existingReview.Value);
+                    var reviewToUpdate = context.TBLREVIEWs.Find(existingReview.ReviewID.Value);
                     if (reviewToUpdate != null)
                     {
                         reviewToUpdate.Comment = comment;
-                        reviewToUpdate.Rating = convertedRating;
+                        reviewToUpdate.Rating = (byte)Math.Min(255, Math.Max(0, rating));
                     }
                 }
                 else
@@ -71,17 +69,19 @@ namespace Parallax.Controllers
                     var newReview = new TBLREVIEW
                     {
                         Comment = comment,
-                        Rating = convertedRating
+                        Rating = (byte)Math.Min(255, Math.Max(0, rating))
                     };
 
-                    // Veritabanına kaydet ve ReservationID'yi güncelle
+                    // Veritabanına kaydet
                     context.TBLREVIEWs.Add(newReview);
                     context.SaveChanges();
 
+                    // ReservationID'yi güncelle
                     var reservationToUpdate = context.TBLRESERVATIONs.Find(reservationId);
                     if (reservationToUpdate != null)
                     {
                         reservationToUpdate.ReviewID = newReview.ReviewID;
+                        reservationToUpdate.ReviewStatus = false;
                     }
                 }
 
@@ -92,40 +92,9 @@ namespace Parallax.Controllers
             }
             catch (Exception ex)
             {
-                // Hata durumunda
                 Console.Error.WriteLine($"Değerlendirme gönderilirken hata oluştu: {ex.Message}");
                 return Json(new { success = false });
             }
         }
-
-        [HttpPost]
-        public ActionResult UpdateReviewStatus(int reservationId)
-        {
-            try
-            {
-                // reservationId ile ilgili rezervasyonu bulun
-                var reservation = context.TBLRESERVATIONs.Find(reservationId);
-                
-                if (reservation != null)
-                {
-                    // ReviewStatus'u 0 olarak güncelle
-                    reservation.ReviewStatus = false;
-
-                    // Değişiklikleri kaydet
-                    context.SaveChanges();
-
-                    return Json(new { success = true, message = "ReviewStatus güncellendi." });
-                }
-                else
-                {
-                    return Json(new { success = false, message = "Rezervasyon bulunamadı." });
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
-            }
-        }
-
     }
 }
