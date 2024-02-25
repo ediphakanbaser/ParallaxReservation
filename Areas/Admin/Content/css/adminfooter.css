@@ -1,0 +1,15 @@
+﻿.admin-footer {
+    text-align: center;
+    height: 3vh;
+    position: fixed;
+    bottom: 0;
+    left: 20%;
+    width: 80%;
+    box-shadow: 0 -0.5rem 0.5rem -0.5rem rgba(0, 0, 0, 0.2);
+    background-color: white;
+}
+
+.myName {
+    text-decoration: none;
+    color: red;
+}

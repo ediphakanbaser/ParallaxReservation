@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr">
+<head>
+    @Html.Partial("_AdminHead")
+</head>
+<body>
+    <div class="wrapper" style="background-image: url(/Areas/Admin/Content/images/login.png);">
+        <div class="panel">
+            <div class="time-box">
+                <div id="hour">10:49</div>
+                <div id="day">23 Şubat 2024</div>
+            </div>
+
+            <div id="admin-img" style="background-image: url(/Areas/Admin/Content/images/admin.png);">
+            </div>
+            <input type="text" class="username-input" id="username" placeholder="Username">
+            <input type="password" class="password-input" id="password" placeholder="Password">
+            <button id="login-btn">Giriş Yap</button>
+        </div>
+    </div>
+
+
+   @Html.Partial("_AdminScripts")
+
+</body>
+</html>

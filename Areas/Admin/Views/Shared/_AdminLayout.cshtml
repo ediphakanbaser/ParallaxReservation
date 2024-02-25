@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+
+<html lang="tr">
+<head>
+    @Html.Partial("_AdminHead")
+</head>
+<body>
+    @Html.Partial("_AdminNavbar")
+    <div class="page-wrapper">
+        <div class="admin-pages">
+            @RenderBody()
+        </div>
+    </div>
+    @Html.Partial("_AdminAside")
+    @Html.Partial("_AdminFooter")
+</body>
+</html>

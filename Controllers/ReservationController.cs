@@ -23,6 +23,7 @@ namespace Parallax.Controllers
         {
             context = new ParallaxContext();
         }
+        
         public ActionResult Reservation()
         {
             TBLPAGE pageModel = context.TBLPAGEs.FirstOrDefault();

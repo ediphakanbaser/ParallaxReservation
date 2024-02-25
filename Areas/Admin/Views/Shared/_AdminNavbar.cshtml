@@ -1,0 +1,14 @@
+﻿<navbar>
+    <div class="navbar-box">
+        <div class="logo" style="background-image: url(/Areas/Admin/Content/images/favicon.png)"></div>
+        <div class="admin-text">PARALLAX <br />DASHBOARD</div>
+    </div>
+    <div class="navbar-box">
+        <span class="logout-link">
+            @Html.ActionLink("Logout", "Logout", "Dashboard", null, new { @class = "logout-link" })
+        </span>
+        <div class="logo"
+             style="background-image: url(/Areas/Admin/Content/images/avatar.png)"></div>
+        <div>@User.Identity.Name</div>
+    </div>
+</navbar>

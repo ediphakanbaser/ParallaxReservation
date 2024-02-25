@@ -94,6 +94,17 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Admin\Content\css\admin.css" />
+    <Content Include="Areas\Admin\Content\css\adminaside.css" />
+    <Content Include="Areas\Admin\Content\css\adminfooter.css" />
+    <Content Include="Areas\Admin\Content\css\adminlogin.css" />
+    <Content Include="Areas\Admin\Content\css\adminnavbar.css" />
+    <Content Include="Areas\Admin\Content\css\adminpages.css" />
+    <Content Include="Areas\Admin\Content\images\avatar.png" />
+    <Content Include="Areas\Admin\Content\images\favicon.png" />
+    <Content Include="Areas\Admin\Content\images\login.jpg" />
+    <Content Include="Areas\Admin\Content\images\logo.png" />
+    <Content Include="Areas\Admin\Scripts\adminlogin.js" />
     <Content Include="Content\css\about.css" />
     <Content Include="Content\css\backtotop.css" />
     <Content Include="Content\css\body.css" />
@@ -166,8 +177,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Content Include="Content\css\page_testi.css" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Attributes\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -226,6 +242,17 @@
     <Content Include="Views\Shared\_Calendar.cshtml" />
     <Content Include="Views\Shared\_JqueryCalendar.cshtml" />
     <Content Include="Views\Reservation\Reservation.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminLogin.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminHead.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminNavbar.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminAside.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminPage.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminFooter.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Areas\Admin\Views\Login\Login.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminScripts.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\_Testimonials.cshtml" />
     <Content Include="Views\User\Testimonial.cshtml" />
@@ -238,6 +265,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Data\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

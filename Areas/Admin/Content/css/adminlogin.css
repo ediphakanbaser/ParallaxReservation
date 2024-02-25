@@ -1,0 +1,64 @@
+﻿.wrapper {
+    width: 100%;
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    color: snow;
+}
+
+.panel {
+    display: flex;
+    width: 35%;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    border-radius: 20px;
+    left:10%;
+    top:10%;
+    position: relative;
+}
+
+#hour {
+    font-size: 100px;
+    font-weight: bold;    
+}
+
+#day {
+    font-size: 50px;
+}
+
+#admin-img {
+    height: 300px;
+    width: 300px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 600px;
+    border-radius: 50%;
+    align-items: center;
+}
+
+.username-input {
+    padding: 5px;
+    width: 500px;
+    text-align: center;
+    font-size: 25px;
+}
+
+.password-input {
+    margin-top: 10px;
+    padding: 5px;
+    width: 500px;
+    text-align: center;
+    font-size: 25px;
+}
+
+#login-btn {
+    width: 250px;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 25px;
+    border-radius: 15px;
+}
