@@ -146,46 +146,130 @@ function updateShift(field) {
 
 $(document).ready(function () {
     $("#btn-emp").on("click", function () {
-        // Formdaki deðerleri al
-        var empName = $("#emp_name").val();
-        var empSurname = $("#emp_surname").val();
-        var empPhone = $("#emp_phone").val();
-        var empMail = $("#emp_mail").val();
-        var empStart = $("#emp_start").val();
-        var empEnd = $("#emp_end").val();
-        var empSalary = $("#emp_salary").val();
+        var formData = new FormData();
+        var fileInput = $("#emp_img")[0].files[0];
 
-        // Veriyi bir nesne olarak hazýrla
-        var employeeData = {
-            Name: empName,
-            Surname: empSurname,
-            Phone: empPhone,
-            Email: empMail,
-            StartDate: empStart,
-            EndDate: empEnd,
-            Salary: empSalary
-            // Diðer özellikleri de ekleyebilirsiniz
-        };
+        formData.append("EmpImage", fileInput);
+        formData.append("EmpName", $("#emp_name").val());
+        formData.append("EmpSurname", $("#emp_surname").val());
+        formData.append("EmpPhone", $("#emp_phone").val());
+        formData.append("EmpMail", $("#emp_mail").val());
+        formData.append("EmpSalary", parseFloat($("#emp_salary").val()));
+        formData.append("EmpStart", $("#emp_start").val());
+        formData.append("EmpEnd", $("#emp_end").val());
+        formData.append("SKILLS", null);
 
-        // AJAX isteði gönder
         $.ajax({
             type: "POST",
-            url: "/Employee/AddEmployee", // Bu URL'yi kendi projenize göre ayarlayýn
-            data: JSON.stringify(employeeData),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
+            url: "/Dashboard/AddEmployee", // Controller ve Action isminizi buraya ekleyin
+            data: formData,
+            contentType: false,
+            processData: false,
             success: function (response) {
-                if (response.success) {
-                    // Baþarý durumunda yapýlacak iþlemler
-                    alert(response.message);
+                console.log(response);
+                // Baþarýlý bir þekilde çalýþan eklenirse yapýlacak iþlemler
+            },
+            error: function (error) {
+                console.error(error);
+                // Hata durumunda yapýlacak iþlemler
+            }
+        });
+    });
+});
+
+$(document).ready(function () {
+    // Özel bir class ("btnEditEmployee") kullanarak buton týklama olayýný dinle
+    $(".btnEditEmployee").on("click", function () {
+        event.preventDefault();
+        var employeeID = $(this).val(); // Týklanan butonun value deðeri (EmployeeID)
+
+        // AJAX isteði ile çalýþan bilgilerini getir
+        $.ajax({
+            type: "GET",
+            url: "/Dashboard/GetEmployeeInfo",
+            data: { employeeID: employeeID },
+            success: function (employeeInfo) {
+                // Bilgileri form alanlarýna doldur                
+                $("#emp_title").text(employeeInfo.EmpID);
+                $("#upd_name").val(employeeInfo.EmpName);
+                $("#upd_surname").val(employeeInfo.EmpSurname);
+                $("#upd_phone").val(employeeInfo.EmpPhone);
+                $("#upd_mail").val(employeeInfo.EmpMail);
+                // Çalýþma Baþlama Tarihi kontrolü
+                var empStart = employeeInfo.EmpStardDate ? formatDate(employeeInfo.EmpStardDate) : '';
+                $("#upd_start").val(empStart);
+
+                // Çalýþma Bitiþ Tarihi kontrolü
+                var empEnd = employeeInfo.EmpDismissalDate ? formatDate(employeeInfo.EmpDismissalDate) : '';
+                $("#upd_end").val(empEnd);
+                function formatDate(input) {
+                    var date = new Date(parseInt(input.substr(6)));
+                    var formattedDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+                    return formattedDate;
+                }
+                $("#upd_salary").val(employeeInfo.EmpSalary);
+
+                // Ýsteðe baðlý olarak resim önizlemesi de yapýlabilir
+                if (employeeInfo.EmpImageURL) {
+                    $("#previewUpdate").html("<img src='" + employeeInfo.EmpImageURL + "' alt='Employee Image' width='40' height='30' />");
                 } else {
-                    // Hata durumunda yapýlacak iþlemler
-                    alert("Hata: " + response.message);
+                    // Eðer resim URL'si yoksa önizlemeyi temizle
+                    $("#previewUpdate").empty();
                 }
             },
             error: function (error) {
-                console.error("AJAX hatasý", error);
+                console.error(error);
             }
         });
+    });
+});
+
+$("#btn-upd").on("click", function () {
+    // Burada güncelleme iþlemlerini gerçekleþtirebilirsiniz
+    var formData = new FormData();
+    var fileInput = $("#update_img")[0].files[0];
+
+    if (fileInput) {
+        // Yeni bir resim dosyasý seçildiyse
+        formData.append("EmpImage", fileInput);
+    }
+
+    formData.append("EmpID", parseInt($("#emp_title").text()));
+    formData.append("EmpName", $("#upd_name").val());
+    formData.append("EmpSurname", $("#upd_surname").val());
+    formData.append("EmpPhone", $("#upd_phone").val());
+    formData.append("EmpMail", $("#upd_mail").val());
+    formData.append("EmpSalary", parseFloat($("#upd_salary").val()));
+    formData.append("EmpStart", $("#upd_start").val());
+    formData.append("EmpEnd", $("#upd_end").val());
+    formData.append("SKILLS", null);
+
+    // Güncellenmiþ verileri al
+    var updatedData = {
+        EmpID: $("#emp_title").text(),
+        EmpName: $("#upd_name").val(),
+        EmpSurname: $("#upd_surname").val(),
+        EmpPhone: $("#upd_phone").val(),
+        EmpMail: $("#upd_mail").val(),
+        EmpStart: $("#upd_start").val(),
+        EmpEnd: $("#upd_end").val(),
+        // Diðer alanlarý ekleyin
+    };
+
+    // AJAX isteði ile güncelleme iþlemini gerçekleþtir
+    $.ajax({
+        type: "POST",
+        url: "/Dashboard/UpdateEmployee",
+        contentType: false, // Dosya yükleme iþlemi olduðu için false
+        processData: false, // Dosya yükleme iþlemi olduðu için false
+        data: formData,
+        success: function (response) {
+            console.log(response);
+            // Baþarýlý bir þekilde güncellendiðini iþaretlemek için gerekli iþlemleri yapabilirsiniz
+        },
+        error: function (error) {
+            console.error(error);
+            // Güncelleme sýrasýnda hata oluþtuðunda gerekli iþlemleri yapabilirsiniz
+        }
     });
 });

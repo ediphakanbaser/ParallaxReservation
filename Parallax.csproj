@@ -200,6 +200,7 @@
     <Compile Include="Models\AdminIndexModel.cs" />
     <Compile Include="Models\DahboardPageModel.cs" />
     <Compile Include="Models\EmployeeTimeSlots.cs" />
+    <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\EmpService.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\LayoutViewModel.cs" />

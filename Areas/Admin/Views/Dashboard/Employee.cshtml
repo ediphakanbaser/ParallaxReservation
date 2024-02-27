@@ -45,7 +45,7 @@
 
                 <div class="formbox">
                     <label>Çalışma Başlama Tarihi:</label>
-                    <input type="date" id="emp_start">
+                    <input type="date" id="emp_start" value="">
                 </div>
 
                 <div class="formbox">
@@ -65,14 +65,14 @@
         </div>
 
         <div class="underlist">
-            <center><h1>Çalışanı Güncelle</h1></center>
+            <center><h1 id="emp_title">Çalışanı Güncelle</h1></center>
 
             
 
             <div class="empWrapper">
 
                 <div class="formbox">
-                    <label>Çalışan Resim</label>
+                    <label >Çalışan Resim</label>
                     <input type="file" class="img-uploader" id="update_img">
                 </div>
 
@@ -82,41 +82,41 @@
 
                 <div class="formbox">
                     <label>Çalışan Adı:</label>
-                    <input type="text" id="emp_name" value="">
+                    <input type="text" id="upd_name" value="">
                 </div>
 
                 <div class="formbox">
                     <label>Çalışan Soyadı:</label>
-                    <input type="text" id="emp_surname" value="">
+                    <input type="text" id="upd_surname" value="">
                 </div>
 
                 <div class="formbox">
                     <label>Çalışan Telefon Numarası:</label>
-                    <input type="text" id="emp_phone" value="">
+                    <input type="text" id="upd_phone" value="">
                 </div>
 
                 <div class="formbox">
                     <label>Çalışan Email:</label>
-                    <input type="text" id="emp_mail" value="">
+                    <input type="text" id="upd_mail" value="">
                 </div>
 
                 <div class="formbox">
                     <label>Çalışma Başlama Tarihi:</label>
-                    <input type="date" id="emp_start">
+                    <input type="date" id="upd_start">
                 </div>
 
                 <div class="formbox">
                     <label>Çalışma Bitiş Tarihi:</label>
-                    <input type="date" id="emp_end">
+                    <input type="date" id="upd_end">
                 </div>
 
                 <div class="formbox">
                     <label>Çalışan Maaşı:</label>
-                    <input type="text" id="emp_salary" value="">
+                    <input type="text" id="upd_salary" value="">
                 </div>
 
                 <div class="formbox">
-                    <button id="btn-emp">Çalışanı Güncelle</button>
+                    <button id="btn-upd">Çalışanı Güncelle</button>
                 </div>
 
             </div>
@@ -157,7 +157,7 @@
                         <td>@item.EmpMail</td>
                         <td>@item.EmpPhone</td>
                         <td>@item.EmpSalary TL</td>
-                        <td><button onclick="openEditModal()">Düzenle</button></td>
+                        <td><button class="btnEditEmployee" value="@item.EmployeeID">Düzenle</button></td>
                     </tr>
                 }
             </table>

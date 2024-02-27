@@ -3,12 +3,14 @@ using Parallax.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+
 
 
 namespace Parallax.Areas.Admin.Controllers
@@ -25,15 +27,15 @@ namespace Parallax.Areas.Admin.Controllers
         [CustomAuthorize]
         public ActionResult Index()
         {
-
+            DateTime currentDate = DateTime.UtcNow.AddHours(3);
             var model = new AdminIndexModel
             {
                 YorumSayisi = context.TBLREVIEWs.Count(),
                 MemnunSayisi = context.TBLREVIEWs.Count(r => r.Rating >= 3.5),
                 MemnunOlmayanSayisi = context.TBLREVIEWs.Count(r => r.Rating < 2.5),
                 MusteriSayisi = context.TBLUSERs.Count(r => r.RoleID == 2),
-                CalisanSayisi = context.TBLEMPLOYEEs.Count(),
-                CalisanAylıkMaasToplam = context.TBLEMPLOYEEs.Sum(c => c.EmpSalary),
+                CalisanSayisi = context.TBLEMPLOYEEs.Where(item => item.EmpDismissalDate == null || currentDate < item.EmpDismissalDate || item.EmpDismissalDate == DateTime.MinValue).Count(),
+                CalisanAylıkMaasToplam = context.TBLEMPLOYEEs.Where(item => item.EmpDismissalDate == null || currentDate < item.EmpDismissalDate || item.EmpDismissalDate == DateTime.MinValue).Sum(c => c.EmpSalary),
                 HizmetSayisi = context.TBLSERVICEs.Count(),
                 TekilHizmetSayisi = context.TBLSERVICEs.Count(h => h.TYPE.TypeID == 1),
                 PaketHizmetSayisi = context.TBLSERVICEs.Count(h => h.TYPE.TypeID == 2)
@@ -241,40 +243,131 @@ namespace Parallax.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddEmployee(TBLEMPLOYEE model)
+        public ActionResult AddEmployee(EmployeeViewModel employee)
         {
             try
             {
-                if (ModelState.IsValid)
+
+                if (employee.EmpImage == null)
                 {
-                    var employee = new TBLEMPLOYEE()
-                    {
-                        EmpName = model.Name,
-                        EmpSurname = model.Surname,
-                        EmpPhone = model.Phone,
-                        EmpMail = model.Email,
-                        EmpStardDate = model.StartDate,
-                        EmpDismissalDate = model.EndDate,
-                        EmpSalary = model.Salary
-                        EmpRecordDateTime =
-                        // Diğer özellikleri ekle
-                    };
-
-                    _context.Employees.Add(employee);
-                    _context.SaveChanges();
-
-                    return Json(new { success = true, message = "Çalışan başarıyla eklendi." });
+                    // Eğer resim seçilmemişse default bir değer atayabilirsiniz.
+                    employee.EmpImageURL = "/Content/Images/womanavatar.jpg";
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Form doğrulama hatası." });
+                    // Resmi kaydetme işlemi
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetExtension(employee.EmpImage.FileName);
+                    string filePath = Path.Combine(Server.MapPath("~/Content/Images"), uniqueFileName);
+
+                    // Dosyayı kaydetme işlemi
+                    employee.EmpImage.SaveAs(filePath);
+                    employee.EmpImageURL = "/Content/Images/" + uniqueFileName;
                 }
+
+                // EmployeeViewModel'i TBLEMPLOYEE'ye dönüştürme
+                TBLEMPLOYEE employeeEntity = new TBLEMPLOYEE
+                {
+                    EmpName = employee.EmpName,
+                    EmpSurname = employee.EmpSurname,
+                    EmpImageURL = employee.EmpImageURL,
+                    EmpPhone = employee.EmpPhone,
+                    EmpMail = employee.EmpMail,
+                    EmpSalary = employee.EmpSalary,
+                    EmpRecordDateTime = DateTime.Now,
+                    EmpStardDate = employee.EmpStart,
+                    EmpDismissalDate = employee.EmpEnd,
+                    // Diğer özellikleri ekleyin
+                };
+
+                using (context) // YourDbContext sınıfını kullanarak bir bağlantı oluşturun
+                {
+                    // Veritabanına ekleme işlemi
+                    context.TBLEMPLOYEEs.Add(employeeEntity);
+                    context.SaveChanges();
+                }
+                return Json(new { success = true, message = "Çalışan başarıyla eklendi." });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = $"Çalışan eklerken bir hata oluştu: {ex.Message}" });
+                return Json(new { success = false, message = "Ekleme sırasında bir hata oluştu." });
             }
         }
+
+        [HttpGet]
+        public ActionResult GetEmployeeInfo(int employeeID)
+        {
+            // employeeID parametresine göre veritabanından çalışan bilgilerini çek
+            var employee = context.TBLEMPLOYEEs.FirstOrDefault(e => e.EmployeeID == employeeID);
+
+            if (employee != null)
+            {
+                // Ajax isteğine çalışan bilgilerini JSON formatında geri döndür
+                return Json(new
+                {
+                    EmpID = employee.EmployeeID,
+                    EmpName = employee.EmpName,
+                    EmpSurname = employee.EmpSurname,
+                    EmpPhone = employee.EmpPhone,
+                    EmpMail = employee.EmpMail,
+                    EmpStardDate = employee.EmpStardDate,
+                    EmpDismissalDate = employee.EmpDismissalDate,
+                    EmpSalary = employee.EmpSalary,
+                    EmpImageURL = employee.EmpImageURL
+                    // Diğer alanları da ekleyebilirsiniz
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            // Eğer çalışan bulunamazsa hata durumu
+            return HttpNotFound("Belirtilen ID'ye sahip çalışan bulunamadı.");
+        }
+
+        [HttpPost]
+        public ActionResult UpdateEmployee(EmployeeViewModel updatedEmployee)
+        {
+            try
+            {
+                // Veritabanından güncellenecek çalışanı bul
+                var existingEmployee = context.TBLEMPLOYEEs.FirstOrDefault(e => e.EmployeeID == updatedEmployee.EmpID);
+
+                if (existingEmployee != null)
+                {
+                    // Güncelleme işlemlerini gerçekleştir
+                    existingEmployee.EmpName = updatedEmployee.EmpName;
+                    existingEmployee.EmpSurname = updatedEmployee.EmpSurname;
+                    existingEmployee.EmpPhone = updatedEmployee.EmpPhone;
+                    existingEmployee.EmpMail = updatedEmployee.EmpMail;
+                    existingEmployee.EmpStardDate = updatedEmployee.EmpStart;
+
+                    // Güncelleme tarihi kontrolü
+                    if (updatedEmployee.EmpEnd != null)
+                        existingEmployee.EmpDismissalDate = updatedEmployee.EmpEnd;
+
+                    // Resim güncelleme kontrolü
+                    if (updatedEmployee.EmpImage != null)
+                    {
+                        // Yeni resim seçildiyse
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetExtension(updatedEmployee.EmpImage.FileName);
+                        string filePath = Path.Combine(Server.MapPath("~/Content/Images"), uniqueFileName);
+                        updatedEmployee.EmpImage.SaveAs(filePath);
+                        existingEmployee.EmpImageURL = "/Content/Images/" + uniqueFileName;
+                    }
+
+                    // Diğer alanları güncelle
+
+                    // Veritabanına değişiklikleri kaydet
+                    context.SaveChanges();
+
+                    return Json(new { success = true, message = "Çalışan başarıyla güncellendi." });
+                }
+
+                return Json(new { success = false, message = "Güncellenmek istenen çalışan bulunamadı." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Güncelleme sırasında bir hata oluştu." });
+            }
+        }
+
 
         [CustomAuthorize]
         public ActionResult Service()
