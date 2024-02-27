@@ -97,6 +97,7 @@
     <Content Include="Areas\Admin\Content\css\admin.css" />
     <Content Include="Areas\Admin\Content\css\adminaside.css" />
     <Content Include="Areas\Admin\Content\css\adminfooter.css" />
+    <Content Include="Areas\Admin\Content\css\adminindex.css" />
     <Content Include="Areas\Admin\Content\css\adminlogin.css" />
     <Content Include="Areas\Admin\Content\css\adminnavbar.css" />
     <Content Include="Areas\Admin\Content\css\adminpages.css" />
@@ -105,6 +106,11 @@
     <Content Include="Areas\Admin\Content\images\login.jpg" />
     <Content Include="Areas\Admin\Content\images\logo.png" />
     <Content Include="Areas\Admin\Scripts\adminlogin.js" />
+    <Content Include="Areas\Admin\Scripts\imageEmployee.js" />
+    <Content Include="Areas\Admin\Scripts\imagePage.js" />
+    <Content Include="Areas\Admin\Scripts\modalOpen.js" />
+    <Content Include="Areas\Admin\Scripts\postPage.js" />
+    <Content Include="Areas\Admin\Scripts\timepicker.js" />
     <Content Include="Content\css\about.css" />
     <Content Include="Content\css\backtotop.css" />
     <Content Include="Content\css\body.css" />
@@ -191,6 +197,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TimeModelHelper.cs" />
+    <Compile Include="Models\AdminIndexModel.cs" />
+    <Compile Include="Models\DahboardPageModel.cs" />
     <Compile Include="Models\EmployeeTimeSlots.cs" />
     <Compile Include="Models\EmpService.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
@@ -243,16 +251,21 @@
     <Content Include="Views\Shared\_JqueryCalendar.cshtml" />
     <Content Include="Views\Reservation\Reservation.cshtml" />
     <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Admin\Views\Shared\_AdminLogin.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminHead.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminNavbar.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminAside.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_AdminPage.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminFooter.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Areas\Admin\Views\Login\Login.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_AdminScripts.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LoginScripts.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\ParallaxPanel.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\Employee.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\Service.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\EmployeeService.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\Testimonial.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\Earnings.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_DashboardScripts.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Shared\_Testimonials.cshtml" />
     <Content Include="Views\User\Testimonial.cshtml" />

@@ -1,8 +1,48 @@
-﻿
+﻿@model Parallax.Models.AdminIndexModel
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Dashboard</h2>
+<div class="cards">
+    <h1>@Model.YorumSayisi</h1>
+    <h2>Yapılan Yorum Sayısı</h2>
+</div>
+<div class="cards">
+    <h1>@Model.MemnunSayisi</h1>
+    <h2>Memnun Sayısı</h2>
+</div>
 
+<div class="cards">
+    <h1>@Model.MemnunOlmayanSayisi</h1>
+    <h2>Memnun Olmayan Sayısı</h2>
+</div>
+
+<div class="cards">
+    <h1>@Model.MusteriSayisi</h1>
+    <h2>Müşteri Sayısı</h2>
+</div>
+
+<div class="cards">
+    <h1>@Model.CalisanSayisi</h1>
+    <h2>Çalışan Sayısı</h2>
+</div>
+<div class="cards">
+    <h1>@Model.CalisanAylıkMaasToplam TL</h1>
+    <h2>Çalışanların Toplam Maaşı</h2>
+</div>
+
+<div class="cards">
+    <h1>@Model.HizmetSayisi</h1>
+    <h2>Verilen Hizmet Sayısı</h2>
+</div>
+
+<div class="cards">
+    <h1>@Model.TekilHizmetSayisi</h1>
+    <h2>Tekil Hizmet Sayısı</h2>
+</div>
+
+<div class="cards">
+    <h1>@Model.PaketHizmetSayisi</h1>
+    <h2>Paket Hizmet Sayısı</h2>
+</div>

@@ -1,0 +1,168 @@
+﻿@model IEnumerable<Parallax.Models.TBLEMPLOYEE>
+@{
+    ViewBag.Title = "Employee";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<form class="employeeForm">
+
+    <div class="left-panel">
+
+        <div class="employeeAdd">
+            <center><h1>Çalışan Ekle</h1></center>
+
+            
+
+            <div class="empWrapper">
+                <div class="formbox">
+                    <label>Çalışan Resim</label>
+                    <input type="file" class="img-uploader" id="emp_img">
+                </div>
+
+                <div class="formbox">
+                    <div id="previewEmployee"></div>
+                </div>
+                <div class="formbox">
+                    <label>Çalışan Adı:</label>
+                    <input type="text" id="emp_name" value="">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışan Soyadı:</label>
+                    <input type="text" id="emp_surname" value="">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışan Telefon Numarası:</label>
+                    <input type="text" id="emp_phone" value="">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışan Email:</label>
+                    <input type="text" id="emp_mail" value="">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışma Başlama Tarihi:</label>
+                    <input type="date" id="emp_start">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışma Bitiş Tarihi:</label>
+                    <input type="date" id="emp_end" value="">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışan Maaşı:</label>
+                    <input type="text" id="emp_salary" value="">
+                </div>
+
+                <div class="formbox">
+                    <button id="btn-emp">Çalışanı Ekle</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="underlist">
+            <center><h1>Çalışanı Güncelle</h1></center>
+
+            
+
+            <div class="empWrapper">
+
+                <div class="formbox">
+                    <label>Çalışan Resim</label>
+                    <input type="file" class="img-uploader" id="update_img">
+                </div>
+
+                <div class="formbox">
+                    <div id="previewUpdate"></div>
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışan Adı:</label>
+                    <input type="text" id="emp_name" value="">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışan Soyadı:</label>
+                    <input type="text" id="emp_surname" value="">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışan Telefon Numarası:</label>
+                    <input type="text" id="emp_phone" value="">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışan Email:</label>
+                    <input type="text" id="emp_mail" value="">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışma Başlama Tarihi:</label>
+                    <input type="date" id="emp_start">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışma Bitiş Tarihi:</label>
+                    <input type="date" id="emp_end">
+                </div>
+
+                <div class="formbox">
+                    <label>Çalışan Maaşı:</label>
+                    <input type="text" id="emp_salary" value="">
+                </div>
+
+                <div class="formbox">
+                    <button id="btn-emp">Çalışanı Güncelle</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+        <div class="employeeList">
+
+            <table border width="100%">
+                <tr>
+                    <th rowspan="2">ID</th>
+                    <th colspan="3">Tarih bilgisi</th>
+                    <th colspan="4">Personel Bilgisi</th>
+                    <th rowspan="2">İşlem Yap</th>
+                </tr>
+                <tr>
+                    <th>Eklenme</th>
+                    <th>Başlangıç</th>
+                    <th>Bitiş</th>
+                    <th>İsim - Soyisim</th>
+                    <th>Mail</th>
+                    <th>Telefon</th>
+                    <th>Maaş</th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.EmployeeID</td>
+                        <td>@item.EmpRecordDateTime</td>
+                        <td>@item.EmpStardDate</td>
+                        <td>@item.EmpDismissalDate</td>
+                        <td>@item.EmpName @item.EmpSurname</td>
+                        <td>@item.EmpMail</td>
+                        <td>@item.EmpPhone</td>
+                        <td>@item.EmpSalary TL</td>
+                        <td><button onclick="openEditModal()">Düzenle</button></td>
+                    </tr>
+                }
+            </table>
+        </div>
+          
+    
+</form>
+

@@ -1,0 +1,82 @@
+﻿@model Parallax.Models.TBLPAGE
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form class="ParallaxPanelForm">
+
+    <div class="about">
+
+        <h3>Hakkında Sayfa Yazıları</h3>
+        <textarea id="abouttext">@Model.AboutText</textarea>
+        <button id="btn-about">Hakkında Yazısını Güncelle</button>
+
+    </div>
+
+    <div class="overlay">
+
+        <div class="images">
+            <h3>Overlay Image</h3>
+            <input type="file" class="img-uploader" id="overlayInput">
+            <div id="previewOverlay"></div>
+            <button class="btn-upload" data-input="#overlayInput" data-url="/Dashboard/UpdateOverlayImage">Overlay Resmi Yükle</button>
+        </div>
+
+        <div class="images">
+            <h3>Logo Image</h3>
+            <input type="file" class="img-uploader" id="logoInput">
+            <div id="previewLogo"></div>
+            <button class="btn-upload" data-input="#logoInput" data-url="/Dashboard/UpdateLogoImage">Logo Yükle</button>
+        </div>
+
+        <div class="images">
+            <h3>Discount Image</h3>
+            <input type="file" class="img-uploader" id="discountInput">
+            <div id="previewDiscount"></div>
+            <button class="btn-upload" data-input="#discountInput" data-url="/Dashboard/UpdateDiscountImage">Discount Resmi Yükle</button>
+        </div>
+
+    </div>
+
+
+    <div class="discount">
+
+        <h3>Discount Başlığı</h3>
+        <input type="text" class="textbox" id="discountTitle" placeholder="@Model.DiscountTitle">
+        <button id="btn-title" onclick="updateDiscount('title')">Discount Başlığını Güncelle</button>
+
+        <h3>Discount Paragrafı</h3>
+        <textarea id="discountParagraph">@Model.DiscountParagraph</textarea>
+        <button id="btn-parag" onclick="updateDiscount('paragraph')">Discount Paragrafını Güncelle</button>
+
+        <h3>Discount Alt Başlığı</h3>
+        <input type="text" class="textbox" id="discountAmount" placeholder="@Model.DiscountAmount">
+        <button id="btn-subtitle" onclick="updateDiscount('amount')">Discount Alt Başlığını Güncelle</button>
+
+    </div>
+
+    <div class="shift-times">
+
+        <div class="shifts">
+            <h3>Mesai Başlangıç Saati</h3>
+            <input type="time" class="small-text" id="mesaiBaslangic" value="@Model.WorkStartTime">
+            <button class="small-text" onclick="updateShift('mesaiBaslangic')">Güncelle</button>
+        </div>
+        <div class="shifts">
+            <h3>Mola Başlangıç Saati</h3>
+            <input type="time" class="small-text" id="molaBaslangic" value="@Model.BreakStartTime">
+            <button class="small-text" onclick="updateShift('molaBaslangic')">Güncelle</button>
+        </div>
+        <div class="shifts">
+            <h3>Mola Bitiş Saati</h3>
+            <input type="time" class="small-text" id="molaBitis" value="@Model.BreakEndTime">
+            <button class="small-text" onclick="updateShift('molaBitis')">Güncelle</button>
+        </div>
+        <div class="shifts">
+            <h3>Mesai Bitiş Saati</h3>
+            <input type="time" class="small-text" id="mesaiBitis" value="@Model.WorkEndTime">
+            <button class="small-text" onclick="updateShift('mesaiBitis')">Güncelle</button>
+        </div>
+    </div>
+
+</form>
