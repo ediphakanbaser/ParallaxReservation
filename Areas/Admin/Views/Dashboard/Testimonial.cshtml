@@ -1,8 +1,76 @@
-﻿
+﻿@model Parallax.Models.TestimonialsViewModel
 @{
     ViewBag.Title = "Testimonial";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+
+
 }
 
-<h2>Testimonial</h2>
+
+<div class="editSide">
+    <div class="reviewBox">
+        <h2>Müşteri Görüşü:</h2>
+        <textarea id="reviewPrg" maxlength="500"></textarea>
+        <div id="the-count">
+            <span id="current">0</span>
+            <span id="maximum">/ 500</span>
+        </div>
+    </div>
+    <div class="reviewPoints">
+        Rezervasyon ID:
+        <input type="text" id="reservationId" disabled/>
+        Değerlendirme ID:
+        <input type="text" id="reviewId" disabled/>
+        Verilmiş Puan:
+        <select class="rating-review" disabled>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+    </div>
+    <div class="reviewButtons">
+        <button class="decisionReview" id="commitReview" >Yayınla</button>
+        <button class="decisionReview" id="dropReview">Yorumu Düşür</button>
+    </div>
+</div>
+
+<div class="testimonialSide">
+
+    <table border width="100%">
+        <tr>
+            <th>Değerlendirme ID</th>
+            <th>Rezervasyon ID</th>
+            <th>Rezervasyon Tarihi</th>
+            <th>Müşteri İsmi</th>
+            <th>Hizmet İsmi</th>
+            <th>Çalışan İsmi</th>
+            <th>Rating</th>
+            <th>Yorum</th>
+            <th>Durum</th>
+            <th>Seçim</th>
+        </tr>
+        @foreach (var reservation in Model.ReservationModels)
+        {
+
+            <tr style="background-color: @(reservation.ReviewStatus == true ? "green" : (reservation.ReviewStatus == false ? "orange" : "red"));">
+                <td>@reservation.ReviewID</td>
+                <td>@reservation.ReservationID</td>
+                <td>@reservation.ReserveDateTime @reservation.ServiceEndDateTime</td>
+                <td>@reservation.TBLUSER.Name @reservation.TBLUSER.Surname</td>
+                <td>@reservation.SKILL.TBLSERVICE.ServiceName</td>
+                <td>@reservation.SKILL.TBLEMPLOYEE.EmpName @reservation.SKILL.TBLEMPLOYEE.EmpSurname</td>
+                <td>@(reservation.TBLREVIEW != null ? reservation.TBLREVIEW.Rating.ToString() : "Puanlama Bekleniyor")</td>
+                <td>@(reservation.TBLREVIEW != null ? reservation.TBLREVIEW.Comment.ToString() : "Yorum Bekleniyor")</td>
+                <td>@(reservation.ReviewStatus == true ? "Yayında" : (reservation.ReviewStatus == false ? "Onayda" : "Beklemede"))</td>
+                                
+                <td>
+                    <button class="decisionReview" value="@reservation.ReservationID">Bilgileri Seç</button>
+                </td>
+            </tr>
+
+        }
+    </table>
+</div>
 

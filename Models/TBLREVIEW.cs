@@ -19,7 +19,7 @@ namespace Parallax.Models
         public int ReviewID { get; set; }
 
         [Column(TypeName = "text")]
-        [Required]
+        
         public string Comment { get; set; }
 
         public byte Rating { get; set; }

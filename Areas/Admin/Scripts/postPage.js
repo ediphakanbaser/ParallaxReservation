@@ -470,9 +470,100 @@ $(document).ready(function () {
                 alert(data.message);
             },
             error: function (error) {
-                alert("Hata oluþtu: " + error);
+                console.error(error.message);
             }
         });
     });
 });
 
+$(document).ready(function () {
+    $(".decisionReview").click(function () {
+        // Seçilen satýrýn deðerlerini al        
+        var reservationID = $(this).val(); // ReservationID'yi al
+
+        // AJAX isteði
+        $.ajax({
+            url: "/Dashboard/GetReviewInfo", // Controller action'ýn adý
+            type: "POST",
+            data: {
+                reservationID: reservationID // reservationID'yi gönder
+            },
+            success: function (data) {
+                // AJAX baþarýlý olduðunda iþlemleri gerçekleþtir
+                // Bu kýsýmda aldýðýnýz verileri ekrana yerleþtirebilirsiniz
+                $("#reservationId").val(reservationID);
+                $("#reviewPrg").val(data.comment);
+                $("#reviewId").val(data.reviewID);
+                $(".rating-review").val(data.rating);
+            },
+            error: function (error) {
+                // Hata durumunda iþlemleri gerçekleþtir
+                console.error("Hata oluþtu: " + error.responseText);
+            }
+        });
+    });
+});
+
+$(document).ready(function () {
+    $("#commitReview").click(function () {
+        
+
+        // Deðerleri doðrudan jQuery val() fonksiyonu ile çekin
+        var reviewID = $("#reviewId").val();
+        var reservationID = $("#reservationId").val();
+        var rating = $(".rating-review").val();
+        var comment = $("#reviewPrg").val();
+
+        console.log(reviewID)
+        console.log(reservationID)
+        console.log(rating)
+        console.log(comment)
+
+        // AJAX isteði
+        $.ajax({
+            url: "/Dashboard/CommitReview",
+            type: "POST",
+            data: {
+                reviewID: reviewID,
+                reservationID: reservationID,
+                rating: rating,
+                comment: comment
+            },
+            success: function (data) {
+                // Baþarýlý olduðunda iþlemleri gerçekleþtir
+                alert(data.message);
+                location.reload();
+            },
+            error: function (error) {
+                // Hata durumunda iþlemleri gerçekleþtir
+                alert("Hata oluþtu: " + error.responseText);
+            }
+        });
+    });
+});
+
+$(document).ready(function () {
+    $("#dropReview").click(function () {
+        var reservationID = $("#reservationId").val();
+        console.log(reservationID)
+
+
+        // AJAX isteði
+        $.ajax({
+            url: "/Dashboard/DropReview",
+            type: "POST",
+            data: {                
+                reservationID: reservationID,
+            },
+            success: function (data) {
+                // Baþarýlý olduðunda iþlemleri gerçekleþtir
+                alert(data.message);
+                location.reload();
+            },
+            error: function (error) {
+                // Hata durumunda iþlemleri gerçekleþtir
+                alert("Hata oluþtu: " + error.responseText);
+            }
+        });
+    });
+});

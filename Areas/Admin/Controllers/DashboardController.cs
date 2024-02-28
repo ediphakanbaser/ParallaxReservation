@@ -2,6 +2,7 @@
 using Parallax.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
@@ -547,16 +548,16 @@ namespace Parallax.Areas.Admin.Controllers
                 SKILL newSkill = new SKILL
                 {
                     EmployeeID = employeeId,
-                    ServiceID = serviceId                   
+                    ServiceID = serviceId
                 };
                 context.SKILLS.Add(newSkill);
                 context.SaveChanges();
                 return Json(new { success = true, message = "Servis başarıyla eklendi." });
             }
-            else 
+            else
             {
                 return Json(new { success = false, message = "Çakışan kayıt bulundu." });
-            }            
+            }
         }
 
         [HttpPost]
@@ -570,9 +571,9 @@ namespace Parallax.Areas.Admin.Controllers
                 context.SaveChanges();
                 return Json(new { success = true, message = "Servis başarıyla kaldırıldı." });
             }
-            return Json(new { success = false, message = "Silinecek kayıt bulunamadı." });          
-            
-            
+            return Json(new { success = false, message = "Silinecek kayıt bulunamadı." });
+
+
         }
 
 
@@ -580,8 +581,105 @@ namespace Parallax.Areas.Admin.Controllers
         [CustomAuthorize]
         public ActionResult Testimonial()
         {
-            return View();
+            List<TBLSERVICE> serviceModel = context.TBLSERVICEs.ToList();
+            List<TBLRESERVATION> reservationModel = context.TBLRESERVATIONs.ToList();
+            List<TBLREVIEW> reviewModel = context.TBLREVIEWs.ToList();
+            List<TBLUSER> userModel = context.TBLUSERs.ToList();
+
+            TestimonialsViewModel model = new TestimonialsViewModel()
+            {
+                ServiceModels = serviceModel,
+                ReservationModels = reservationModel,
+                ReviewModels = reviewModel,
+                UserModels = userModel,
+            };
+            return View(model);
         }
+
+        [HttpPost]
+        public ActionResult GetReviewInfo(int reservationID)
+        {
+            var reservation = context.TBLRESERVATIONs
+                .Include(r => r.TBLREVIEW) // TBLREVIEW ilişkisini yükleyin
+                .FirstOrDefault(r => r.ReservationID == reservationID);
+
+            if (reservation != null && reservation.TBLREVIEW != null)
+            {
+                return Json(new
+                {
+                    reviewID = reservation.TBLREVIEW.ReviewID,
+                    rating = reservation.TBLREVIEW.Rating,
+                    comment = reservation.TBLREVIEW.Comment
+                });
+            }
+            return Json(new { success = false, message = "Müşterinin rezervasyonu tamamlanmadı ve yorum kısmı kapalı." });
+
+        }
+
+
+
+
+
+        [HttpPost]
+        public ActionResult CommitReview(int reviewID, int reservationID, byte rating, string comment)
+        {
+            try
+            {
+                var reviewId = context.TBLREVIEWs.FirstOrDefault(r => r.ReviewID == reviewID);
+                if (reviewId != null)
+                {
+                    reviewId.Comment = comment;
+                    reviewId.Rating = rating;
+
+                    var reservationId = context.TBLRESERVATIONs.FirstOrDefault(e => e.ReservationID == reservationID);
+                    if (reservationId != null)
+                    {
+                        reservationId.ReviewStatus = true;
+                        context.SaveChanges();
+                    }
+
+                    return Json(new { success = true, message = "İşlem başarıyla tamamlandı." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "İlgili ReviewID bulunamadı." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Hata mesajını konsola veya log dosyasına yazabilirsiniz.
+                Console.WriteLine($"Hata oluştu: {ex.Message}");
+                return Json(new { success = false, message = "Bir hata oluştu. Detaylı bilgi için logları kontrol edin." });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DropReview(int reservationID)
+        {
+            try
+            {
+                var reservationId = context.TBLRESERVATIONs.FirstOrDefault(e => e.ReservationID == reservationID);
+                if (reservationId != null)
+                {
+                    reservationId.ReviewStatus = false;
+                    context.SaveChanges();
+                    return Json(new { success = true, message = "İşlem başarıyla tamamlandı." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "İlgili ReviewID bulunamadı." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Hata mesajını konsola veya log dosyasına yazabilirsiniz.
+                Console.WriteLine($"Hata oluştu: {ex.Message}");
+                return Json(new { success = false, message = "Bir hata oluştu. Detaylı bilgi için logları kontrol edin." });
+            }
+        }
+
+
+
 
         [CustomAuthorize]
         public ActionResult Earnings()

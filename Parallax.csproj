@@ -175,6 +175,7 @@
     <Content Include="Content\images\work-9.jpg" />
     <Content Include="Content\images\wp.png" />
     <Content Include="Global.asax" />
+    <Content Include="Areas\Admin\Scripts\charCounter.js" />
     <Content Include="Scripts\js\datepicker.js" />
     <Content Include="Scripts\js\preloader.js" />
     <Content Include="Scripts\js\sidebuttons.js" />
