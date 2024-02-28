@@ -428,3 +428,51 @@ $("#btn-servup").on("click", function () {
         }
     });
 });
+
+$(document).ready(function () {
+    $(".employeeSelector").on("click", function () {
+        var selectedEmployeeId = $(this).val();
+        $(".hiddenId").text(selectedEmployeeId);
+    });
+
+    $(".serviceAdd").on("click", function () {
+        var selectedEmployeeId = $(".hiddenId").text();
+        var selectedServiceId = $(this).val();
+
+        $.ajax({
+            url: "/Dashboard/ServiceAdd", // ServisEkle metodu bulunduðu controller adý ile deðiþtirilmelidir
+            type: "POST",
+            data: {
+                employeeId: selectedEmployeeId,
+                serviceId: selectedServiceId
+            },
+            success: function (data) {
+                console.log(data.message);
+            },
+            error: function (error) {
+                console.error("Hata oluþtu", error);
+            }
+        });
+    });
+
+    $(".serviceDelete").on("click", function () {
+        var selectedEmployeeId = $(".hiddenId").text();
+        var selectedServiceId = $(this).val();
+
+        $.ajax({
+            url: "/Dashboard/ServiceDelete", // ServisKaldýr metodu bulunduðu controller adý ile deðiþtirilmelidir
+            type: "POST",
+            data: {
+                employeeId: selectedEmployeeId,
+                serviceId: selectedServiceId
+            },
+            success: function (data) {
+                console.log(data.message);
+            },
+            error: function (error) {
+                alert("Hata oluþtu: " + error);
+            }
+        });
+    });
+});
+

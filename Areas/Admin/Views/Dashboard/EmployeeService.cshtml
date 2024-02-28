@@ -1,8 +1,65 @@
-﻿
+﻿@model Parallax.Models.AssignmentViewModel
 @{
     ViewBag.Title = "EmployeeService";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>EmployeeService</h2>
+<div class="employeeSide">
+    <table border width="100%">
+        <tr>
+            <th width="50px">ID</th>
+            <th>Çalışan Adı</th>
+            <th>Çalışıyor mu?</th>
+            <th width="100px"><button class="employeeSelector" value="">Seçimi Temizle</button></th>
+        </tr>
+        @foreach (var emp in Model.EmployeeModel)
+        {
+            <tr>
+                <td>@emp.EmployeeID</td>
+                <td>@emp.EmpName @emp.EmpSurname</td>
+                @if (DateTime.UtcNow.AddHours(3) < emp.EmpDismissalDate || emp.EmpDismissalDate == null || emp.EmpDismissalDate == DateTime.MinValue)
+                {
+                    <td style="background-color:green !important">Çalışıyor</td>
+                }
+                else
+                {
+                    <td style="background-color:red !important">Ayrıldı</td>
+                }
+
+                <td><button class="employeeSelector" value="@emp.EmployeeID">Çalışanı Seç</button></td>
+            </tr>
+        }
+    </table>
+    <div>Seçilen Çalışan ID:<div class="hiddenId"></div></div>
+</div>
+
+<div class="serviceSide">
+    <table border width="100%">
+        <tr>
+            <th width="50px">ID</th>
+            <th>Servis İsmi</th>
+            <th>Hizmet Veriliyor mu?</th>
+            <th>Ekle</th>
+            <th>Kaldır</th>
+        </tr>
+        @foreach (var srv in Model.ServiceModel)
+        {
+            <tr>
+                <td>@srv.ServiceID</td>
+                <td>@srv.ServiceName</td>
+                @if (@srv.ServiceStatus == true)
+                {
+                    <td style="background-color:green !important">Veriliyor</td>
+                }
+                else
+                {
+                    <td style="background-color:red !important">Verilmiyor</td>
+                }
+                <td width="100px"><button class="serviceAdd" value="@srv.ServiceID">Servisi Ekle</button></td>
+                <td width="100px"><button class="serviceDelete" value="@srv.ServiceID">Servisi Kaldır</button></td>
+
+            </tr>
+        }
+    </table>
+</div>
 

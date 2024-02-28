@@ -312,10 +312,21 @@ table {
     grid-area: 5 / 3 / 7 / 5;
     align-items: center;
 }
-
 /*Service End*/
+
 /*EmployeeService Start*/
+.employeeSide {
+    width: 35%;
+    box-shadow: 0.5rem 0.5rem 0.5rem -0.5rem rgba(0, 0, 0, 0.2);
+}
+
+.serviceSide {
+    padding-left:2%;
+    width: 63%;
+    box-shadow: 0.5rem 0.5rem 0.5rem -0.5rem rgba(0, 0, 0, 0.2);
+}
 /*EmployeeService End*/
+
 /*Testimonials Start*/
 /*Testimonials End*/
 /*Earnings Start*/

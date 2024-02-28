@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -473,7 +474,7 @@ namespace Parallax.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateService(ServiceViewModel updatedService) 
+        public ActionResult UpdateService(ServiceViewModel updatedService)
         {
             try
             {
@@ -489,8 +490,8 @@ namespace Parallax.Areas.Admin.Controllers
                     existingService.ServicePrice = updatedService.SrvPrice;
                     existingService.DiscountedPrice = updatedService.SrvDisc;
                     existingService.ServiceParagraph = updatedService.SrvPrg;
-                                       
-                   
+
+
                     // Resim güncelleme kontrolü
                     if (updatedService.SrvImage != null)
                     {
@@ -522,8 +523,59 @@ namespace Parallax.Areas.Admin.Controllers
         [CustomAuthorize]
         public ActionResult EmployeeService()
         {
-            return View();
+            List<TBLEMPLOYEE> employeeModel = context.TBLEMPLOYEEs.ToList();
+            List<TBLSERVICE> serviceModel = context.TBLSERVICEs.ToList();
+            List<SKILL> skillModel = context.SKILLS.ToList();
+
+            AssignmentViewModel comboModel = new AssignmentViewModel()
+            {
+                EmployeeModel = employeeModel,
+                ServiceModel = serviceModel,
+                SkillModel = skillModel
+            };
+
+            return View(comboModel);
         }
+
+        [HttpPost]
+        public ActionResult ServiceAdd(short employeeId, int serviceId)
+        {
+            var record = context.SKILLS.FirstOrDefault(e => e.EmployeeID == employeeId && e.ServiceID == serviceId);
+
+            if (record == null)
+            {
+                SKILL newSkill = new SKILL
+                {
+                    EmployeeID = employeeId,
+                    ServiceID = serviceId                   
+                };
+                context.SKILLS.Add(newSkill);
+                context.SaveChanges();
+                return Json(new { success = true, message = "Servis başarıyla eklendi." });
+            }
+            else 
+            {
+                return Json(new { success = false, message = "Çakışan kayıt bulundu." });
+            }            
+        }
+
+        [HttpPost]
+        public ActionResult ServiceDelete(short employeeId, int serviceId)
+        {
+            var existedRecord = context.SKILLS.FirstOrDefault(e => e.EmployeeID == employeeId && e.ServiceID == serviceId);
+
+            if (existedRecord != null)
+            {
+                context.SKILLS.Remove(existedRecord);
+                context.SaveChanges();
+                return Json(new { success = true, message = "Servis başarıyla kaldırıldı." });
+            }
+            return Json(new { success = false, message = "Silinecek kayıt bulunamadı." });          
+            
+            
+        }
+
+
 
         [CustomAuthorize]
         public ActionResult Testimonial()

@@ -199,6 +199,7 @@
     </Compile>
     <Compile Include="Helpers\TimeModelHelper.cs" />
     <Compile Include="Models\AdminIndexModel.cs" />
+    <Compile Include="Models\AssignmentViewModel.cs" />
     <Compile Include="Models\DahboardPageModel.cs" />
     <Compile Include="Models\EmployeeTimeSlots.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
