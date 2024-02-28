@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $("#btn-about").on("click", function () {
         var aboutText = $("#abouttext").val();
-        console.log(aboutText);
+
         $.ajax({
             type: "POST",
             url: "/Dashboard/UpdateAboutText",
@@ -9,17 +9,17 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.success) {
-                    console.log(response.message);
+                    alert(response.message);
                     $("#abouttext").val(response.updatedAboutText);
                     // Baþarý durumunda yapýlacak iþlemler
                 }
                 else {
-                    console.error(response.message);
+                    alert(response.message);
                     // Hata durumunda yapýlacak iþlemler
                 }
             },
             error: function (error) {
-                console.error("AboutText güncelleme hatasý", error);
+                alert("AboutText güncelleme hatasý: " + error);
             }
         });
     });
@@ -43,20 +43,20 @@ $(document).ready(function () {
                 processData: false,
                 success: function (response) {
                     if (response.success) {
-                        console.log(response.message);
+                        alert(response.message);
                         // Baþarý durumunda yapýlacak iþlemler
                     }
                     else {
-                        console.error(response.message);
+                        alert(response.message);
                         // Hata durumunda yapýlacak iþlemler
                     }
                 },
                 error: function (error) {
-                    console.error("Görsel güncelleme hatasý", error);
+                    alert("Görsel güncelleme hatasý: " + error);
                 }
             });
         } else {
-            console.error("Lütfen geçerli bir görsel seçin");
+            alert("Lütfen geçerli bir görsel seçin");
         }
     });
 });
@@ -76,7 +76,7 @@ function updateDiscount(field) {
             value = $("#discountAmount").val();
             break;
         default:
-            console.error("Geçersiz alan");
+            alert("Geçersiz alan");
             return;
     }
 
@@ -87,15 +87,15 @@ function updateDiscount(field) {
         dataType: "json",
         success: function (response) {
             if (response.success) {
-                console.log(response.message);
+                alert(response.message);
                 // Baþarý durumunda yapýlacak iþlemler
             } else {
-                console.error(response.message);
+                alert(response.message);
                 // Hata durumunda yapýlacak iþlemler
             }
         },
         error: function (error) {
-            console.error("Discount güncelleme hatasý", error);
+            alert("Discount güncelleme hatasý: " + error);
         }
     });
 }
@@ -118,7 +118,7 @@ function updateShift(field) {
             value = $("#mesaiBitis").val() + ":00";
             break;
         default:
-            console.error("Geçersiz alan");
+            alert("Geçersiz alan");
             return;
     }
     console.log(value);
@@ -130,15 +130,15 @@ function updateShift(field) {
         dataType: "json",
         success: function (response) {
             if (response.success) {
-                console.log(response.message);
+                alert(response.message);
                 // Baþarý durumunda yapýlacak iþlemler
             } else {
-                console.error(response.message);
+                alert(response.message);
                 // Hata durumunda yapýlacak iþlemler
             }
         },
         error: function (error) {
-            console.error("Shift güncelleme hatasý", error);
+            alert("Shift güncelleme hatasý: " + error);
         }
     });
 }
@@ -166,11 +166,11 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (response) {
-                console.log(response);
+                alert(response);
                 // Baþarýlý bir þekilde çalýþan eklenirse yapýlacak iþlemler
             },
             error: function (error) {
-                console.error(error);
+                alert(response);
                 // Hata durumunda yapýlacak iþlemler
             }
         });
@@ -218,7 +218,7 @@ $(document).ready(function () {
                 }
             },
             error: function (error) {
-                console.error(error);
+                alert(error);
             }
         });
     });
@@ -254,12 +254,12 @@ $("#btn-upd").on("click", function () {
         processData: false, // Dosya yükleme iþlemi olduðu için false
         data: formData,
         success: function (response) {
-            console.log(response);
+            alert(response);
             location.reload();
             // Baþarýlý bir þekilde güncellendiðini iþaretlemek için gerekli iþlemleri yapabilirsiniz
         },
         error: function (error) {
-            console.error(error);
+            alert(error);
             // Güncelleme sýrasýnda hata oluþtuðunda gerekli iþlemleri yapabilirsiniz
         }
     });
@@ -302,17 +302,17 @@ $(document).ready(function () {
                 processData: false,
 
                 success: function (response) {
-                    console.log(response);
+                    alert(response);
                     location.reload();
                     // Baþarýlý bir þekilde çalýþtýðýnda yapýlacak iþlemler
                 },
                 error: function (error) {
-                    console.error(error);
+                    alert(error);
                     // Hata durumunda yapýlacak iþlemler
                 }
             });
         } else {
-            console.error("Dosya seçilmedi veya öðe bulunamadý.");
+            alert("Dosya seçilmedi veya öðe bulunamadý.");
         }
     });
 });
@@ -361,7 +361,7 @@ $(document).ready(function () {
                 }
             },
             error: function (error) {
-                console.error(error);
+                alert(error);
             }
         });
     });
@@ -379,15 +379,15 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     // Sunucu tarafýnda baþarýlý bir þekilde güncellendi
-                    console.log(response.message);
+                    alert(response.message);
                     location.reload();
                 } else {
                     // Sunucu tarafýnda bir hata oluþtu
-                    console.error(response.message);
+                    alert(response.message);
                 }
             },
             error: function (error) {
-                console.error(error);
+                alert(error);
             }
         });
     });
@@ -418,12 +418,12 @@ $("#btn-servup").on("click", function () {
         processData: false, // Dosya yükleme iþlemi olduðu için false
         data: formData,
         success: function (response) {
-            console.log(response);
+            alert(response);
             location.reload();
             // Baþarýlý bir þekilde güncellendiðini iþaretlemek için gerekli iþlemleri yapabilirsiniz
         },
         error: function (error) {
-            console.error(error);
+            alert(error);
             // Güncelleme sýrasýnda hata oluþtuðunda gerekli iþlemleri yapabilirsiniz
         }
     });
@@ -447,10 +447,10 @@ $(document).ready(function () {
                 serviceId: selectedServiceId
             },
             success: function (data) {
-                console.log(data.message);
+                alert(data.message);
             },
             error: function (error) {
-                console.error("Hata oluþtu", error);
+                alert("Hata oluþtu: " + error);
             }
         });
     });
@@ -467,7 +467,7 @@ $(document).ready(function () {
                 serviceId: selectedServiceId
             },
             success: function (data) {
-                console.log(data.message);
+                alert(data.message);
             },
             error: function (error) {
                 alert("Hata oluþtu: " + error);
