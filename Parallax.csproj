@@ -190,6 +190,7 @@
     <Compile Include="Areas\Admin\Attributes\CustomAuthorizeAttribute.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
+    <Content Include="Areas\Admin\Scripts\imageService.js" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReservationController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Models\ReservationViewModel.cs" />
     <Compile Include="Models\ROLE.cs" />
     <Compile Include="Models\ServiceType.cs" />
+    <Compile Include="Models\ServiceViewModel.cs" />
     <Compile Include="Models\SKILL.cs" />
     <Compile Include="Models\TBLEMPLOYEE.cs" />
     <Compile Include="Models\TBLPAGE.cs" />

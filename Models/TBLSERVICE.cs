@@ -37,6 +37,8 @@ namespace Parallax.Models
 
         public TimeSpan TimeSpent { get; set; }
 
+        public bool ServiceStatus { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SKILL> SKILLS { get; set; }
 

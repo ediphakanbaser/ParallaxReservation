@@ -6,7 +6,6 @@ document.getElementById('update_img').addEventListener('change', function () {
     previewImage(this, 'previewUpdate', 40, 30); // Ýstenen geniþlik ve yükseklik deðerlerini kullanabilirsiniz.
 });
 
-
 function previewImage(input, previewId, maxWidth, maxHeight) {
     const preview = document.getElementById(previewId);
 

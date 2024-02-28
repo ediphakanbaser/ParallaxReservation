@@ -27,5 +27,7 @@ namespace Parallax.Models
         [Key]
         [Column(Order = 2)]
         public byte TypeID { get; set; }
+
+        public bool ServiceStatus { get; set; }
     }
 }

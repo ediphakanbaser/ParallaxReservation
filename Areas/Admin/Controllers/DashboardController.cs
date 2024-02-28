@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Web.Services.Description;
+using System.Web.UI.WebControls;
 
 
 
@@ -372,8 +374,150 @@ namespace Parallax.Areas.Admin.Controllers
         [CustomAuthorize]
         public ActionResult Service()
         {
-            return View();
+            List<TBLSERVICE> serviceModel = context.TBLSERVICEs.ToList();
+            return View(serviceModel);
+
         }
+        [HttpPost]
+        public ActionResult AddService(ServiceViewModel service)
+        {
+            try
+            {
+                if (service.SrvImage == null)
+                {
+                    // Eğer resim seçilmemişse default bir değer atayabilirsiniz.
+                    service.SrvImageURL = "/Content/Images/womanavatar.jpg";
+                }
+                else
+                {
+                    // Resmi kaydetme işlemi
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetExtension(service.SrvImage.FileName);
+                    string filePath = Path.Combine(Server.MapPath("~/Content/Images"), uniqueFileName);
+
+                    // Dosyayı kaydetme işlemi
+                    service.SrvImage.SaveAs(filePath);
+                    service.SrvImageURL = "/Content/Images/" + uniqueFileName;
+                }
+
+                // ServiceViewModel'i TBLSERVICE'ye dönüştürme
+                TBLSERVICE serviceEntity = new TBLSERVICE
+                {
+                    ServiceName = service.SrvName,
+                    TypeID = service.SrvType,
+                    ServiceImageURL = service.SrvImageURL,
+                    TimeSpent = TimeSpan.Parse(service.SrvSpent),
+                    ServicePrice = service.SrvPrice,
+                    DiscountedPrice = service.SrvDisc,
+                    ServiceParagraph = service.SrvPrg,
+                    // Diğer özellikleri ekleyin
+                };
+
+                using (context) // YourDbContext sınıfını kullanarak bir bağlantı oluşturun
+                {
+                    // Veritabanına ekleme işlemi
+                    context.TBLSERVICEs.Add(serviceEntity);
+                    context.SaveChanges();
+                }
+
+                return Json(new { success = true, message = "Servis başarıyla eklendi." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Ekleme sırasında bir hata oluştu." });
+            }
+        }
+
+        [HttpGet]
+        public ActionResult GetServiceInfo(int serviceID)
+        {
+            var service = context.TBLSERVICEs.FirstOrDefault(e => e.ServiceID == serviceID);
+
+            if (service != null)
+            {
+                // Ajax isteğine çalışan bilgilerini JSON formatında geri döndür
+                return Json(new
+                {
+                    SrvID = service.ServiceID,
+                    SrvName = service.ServiceName,
+                    SrvType = service.TypeID,
+                    SrvSpent = service.TimeSpent,
+                    SrvPrice = service.ServicePrice,
+                    SrvDisc = service.DiscountedPrice,
+                    SrvPrg = service.ServiceParagraph,
+                    SrvImageURL = service.ServiceImageURL
+
+
+                }, JsonRequestBehavior.AllowGet);
+            }
+            return HttpNotFound("Belirtilen ID'ye sahip çalışan bulunamadı.");
+        }
+
+        [HttpPost]
+        public ActionResult ChangeServiceStatus(int serviceID)
+        {
+            try
+            {
+                var status = context.TBLSERVICEs.FirstOrDefault(e => e.ServiceID == serviceID);
+                if (status != null)
+                {
+                    status.ServiceStatus = !status.ServiceStatus;
+                    context.SaveChanges();
+                }
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda uygun loglama işlemlerini gerçekleştirin
+                return Json(new { success = false, message = "Durum değiştirme sırasında bir hata oluştu." });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UpdateService(ServiceViewModel updatedService) 
+        {
+            try
+            {
+                // Veritabanından güncellenecek çalışanı bul
+                var existingService = context.TBLSERVICEs.FirstOrDefault(e => e.ServiceID == updatedService.SrvID);
+
+                if (existingService != null)
+                {
+                    // Güncelleme işlemlerini gerçekleştir
+                    existingService.ServiceName = updatedService.SrvName;
+                    existingService.TypeID = updatedService.SrvType;
+                    existingService.TimeSpent = TimeSpan.Parse(updatedService.SrvSpent);
+                    existingService.ServicePrice = updatedService.SrvPrice;
+                    existingService.DiscountedPrice = updatedService.SrvDisc;
+                    existingService.ServiceParagraph = updatedService.SrvPrg;
+                                       
+                   
+                    // Resim güncelleme kontrolü
+                    if (updatedService.SrvImage != null)
+                    {
+                        // Yeni resim seçildiyse
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetExtension(updatedService.SrvImage.FileName);
+                        string filePath = Path.Combine(Server.MapPath("~/Content/Images"), uniqueFileName);
+                        updatedService.SrvImage.SaveAs(filePath);
+                        existingService.ServiceImageURL = "/Content/Images/" + uniqueFileName;
+                    }
+
+                    // Diğer alanları güncelle
+
+                    // Veritabanına değişiklikleri kaydet
+                    context.SaveChanges();
+
+                    return Json(new { success = true, message = "Çalışan başarıyla güncellendi." });
+                }
+
+                return Json(new { success = false, message = "Güncellenmek istenen çalışan bulunamadı." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Güncelleme sırasında bir hata oluştu." });
+            }
+        }
+
+
 
         [CustomAuthorize]
         public ActionResult EmployeeService()

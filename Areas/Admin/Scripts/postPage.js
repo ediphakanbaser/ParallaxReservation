@@ -245,16 +245,6 @@ $("#btn-upd").on("click", function () {
     formData.append("SKILLS", null);
 
     // Güncellenmiþ verileri al
-    var updatedData = {
-        EmpID: $("#emp_title").text(),
-        EmpName: $("#upd_name").val(),
-        EmpSurname: $("#upd_surname").val(),
-        EmpPhone: $("#upd_phone").val(),
-        EmpMail: $("#upd_mail").val(),
-        EmpStart: $("#upd_start").val(),
-        EmpEnd: $("#upd_end").val(),
-        // Diðer alanlarý ekleyin
-    };
 
     // AJAX isteði ile güncelleme iþlemini gerçekleþtir
     $.ajax({
@@ -265,6 +255,171 @@ $("#btn-upd").on("click", function () {
         data: formData,
         success: function (response) {
             console.log(response);
+            location.reload();
+            // Baþarýlý bir þekilde güncellendiðini iþaretlemek için gerekli iþlemleri yapabilirsiniz
+        },
+        error: function (error) {
+            console.error(error);
+            // Güncelleme sýrasýnda hata oluþtuðunda gerekli iþlemleri yapabilirsiniz
+        }
+    });
+});
+
+
+
+$(document).ready(function () {
+    $("#btn-srv").on("click", function (event) {
+        event.preventDefault();
+
+        // Dosya seçimi kontrolü yapýn
+        var imgInput = $("#serv_img")[0].files[0];
+        if (imgInput) {
+            var formData = new FormData();
+            var srvName = $("#serv_name").val();
+            var srvTypeValue = $("#serv_type").val();
+            var srvSpent = $("#serv_spt").val() + ":00";
+            var srvPrice = parseFloat($("#serv_price").val());
+            var srvDisc = parseFloat($("#serv_disc").val());
+            var srvPrg = $("#serv_prg").val();
+
+            
+
+            formData.append("SrvImage", imgInput);
+            formData.append("SrvName", srvName);
+            formData.append("SrvType", srvTypeValue);
+            formData.append("SrvSpent", srvSpent);
+            formData.append("SrvPrice", srvPrice);
+            formData.append("SrvDisc", srvDisc);
+            formData.append("SrvPrg", srvPrg);
+
+            console.log(formData);
+
+            $.ajax({
+                type: "POST",
+                url: "/Dashboard/AddService",
+                data: formData,
+                contentType: false,
+                processData: false,
+
+                success: function (response) {
+                    console.log(response);
+                    location.reload();
+                    // Baþarýlý bir þekilde çalýþtýðýnda yapýlacak iþlemler
+                },
+                error: function (error) {
+                    console.error(error);
+                    // Hata durumunda yapýlacak iþlemler
+                }
+            });
+        } else {
+            console.error("Dosya seçilmedi veya öðe bulunamadý.");
+        }
+    });
+});
+
+$(document).ready(function () {
+// Özel bir class ("btnEditEmployee") kullanarak buton týklama olayýný dinle
+    $(".btnEditService").on("click", function () {
+        event.preventDefault();
+        var serviceID = $(this).val(); // Týklanan butonun value deðeri (EmployeeID)
+
+        $.ajax({
+            type: "GET",
+            url: "/Dashboard/GetServiceInfo",
+            data: { serviceID: serviceID },
+            success: function (serviceInfo) {
+                // Bilgileri form alanlarýna doldur                
+                $("#servup_title").text(serviceInfo.SrvID);
+                $("#servup_name").val(serviceInfo.SrvName);
+                $("#servup_type").val(serviceInfo.SrvType);
+                
+                $("#servup_price").val(serviceInfo.SrvPrice);
+                $("#servup_disc").val(serviceInfo.SrvDisc);
+                $("#servup_prg").val(serviceInfo.SrvPrg);
+                // Çalýþma Baþlama Tarihi kontrolü
+                var hours = serviceInfo.SrvSpent.Hours;
+                var minutes = serviceInfo.SrvSpent.Minutes;
+
+                // Saat ve dakika bilgilerini 10'dan küçükse baþlarýna 0 ekleyerek birleþtir
+                var formattedHours = hours < 10 ? '0' + hours : hours;
+                var formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+                // Saat ve dakika bilgilerini birleþtirerek formatlayabilirsiniz
+                var formattedTime = formattedHours + ':' + formattedMinutes;
+
+                // input alanýnýn value özelliðini güncelle
+                $("#servup_spt").val(formattedTime);
+               
+                console.log(formattedTime);
+
+
+                if (serviceInfo.SrvImageURL) {
+                    $("#previewServiceUp").html("<img src='" + serviceInfo.SrvImageURL + "' alt='Employee Image' width='40' height='30' />");
+                } else {
+                    // Eðer resim URL'si yoksa önizlemeyi temizle
+                    $("#previewServiceUp").empty();
+                }
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    });
+});
+
+$(document).ready(function () {
+    $(".btnChangeService").on("click", function () {
+        var serviceID = $(this).val();
+
+        // AJAX isteði ile sunucuya durumu güncelle
+        $.ajax({
+            type: "POST",
+            url: "/Dashboard/ChangeServiceStatus", // Bu URL'yi kendi projenize uygun þekilde güncelleyin
+            data: { serviceID: serviceID },
+            success: function (response) {
+                if (response.success) {
+                    // Sunucu tarafýnda baþarýlý bir þekilde güncellendi
+                    console.log(response.message);
+                    location.reload();
+                } else {
+                    // Sunucu tarafýnda bir hata oluþtu
+                    console.error(response.message);
+                }
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    });
+});
+
+$("#btn-servup").on("click", function () {
+    // Burada güncelleme iþlemlerini gerçekleþtirebilirsiniz
+    var formData = new FormData();
+    var fileInput = $("#servup_img")[0].files[0];
+
+    if (fileInput) {
+        // Yeni bir resim dosyasý seçildiyse
+        formData.append("SrvImage", fileInput);
+    }
+    formData.append("SrvID", parseInt($("#servup_title").text()));
+    formData.append("SrvName", $("#servup_name").val());
+    formData.append("SrvType", $("#servup_type").val());
+    formData.append("SrvSpent", $("#servup_spt").val() + ":00");
+    formData.append("SrvPrice", parseFloat($("#servup_price").val()));
+    formData.append("SrvDisc", parseFloat($("#servup_disc").val()));
+    formData.append("SrvPrg", $("#servup_prg").val());
+ 
+
+    $.ajax({
+        type: "POST",
+        url: "/Dashboard/UpdateService",
+        contentType: false, // Dosya yükleme iþlemi olduðu için false
+        processData: false, // Dosya yükleme iþlemi olduðu için false
+        data: formData,
+        success: function (response) {
+            console.log(response);
+            location.reload();
             // Baþarýlý bir þekilde güncellendiðini iþaretlemek için gerekli iþlemleri yapabilirsiniz
         },
         error: function (error) {

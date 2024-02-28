@@ -1,8 +1,214 @@
-﻿
+﻿@model IEnumerable<Parallax.Models.TBLSERVICE>
 @{
     ViewBag.Title = "Service";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Service</h2>
+<form class="employeeForm">
+
+    <div class="left-panel">
+
+        <div class="employeeAdd">
+
+            <div class="srvWrapper">
+
+                <div class="div1">
+                    <center><h1>Servis Ekle</h1></center>
+                </div>
+
+                <div class="div2">
+                    <label>Servis Adı:</label>
+                    <input type="text" id="serv_name" value="">
+                </div>
+
+                <div class="div4">
+                    <label>Tip Numarası:</label>
+                    <select id="serv_type">
+                        <option value="1">Tekil</option>
+                        <option value="2">Paket</option>
+                    </select>
+                </div>
+
+                <div class="div5">
+                    <label>Servis Süresi</label>
+                    <input type="time" id="serv_spt" value="">
+                </div>
+
+                <div class="div6">
+                    <label>Servis Ücreti:</label>
+                    <input type="text" id="serv_price" value="">
+                </div>
+
+                <div class="div7">
+                    <label>İndirimli Ücreti:</label>
+                    <input type="text" id="serv_disc" value="">
+                </div>
+
+                <div class="div3">
+                    <center>Tanıtım yazısı:</center>
+                    <textarea id="serv_prg"></textarea>
+                </div>
+
+                <div class="div8">
+                    <label>Servis Resmi</label>
+                    <input type="file" class="img-uploader" id="serv_img" />
+                </div>
+
+                <div class="div9">
+                    <button id="btn-srv">Servis Ekle</button>
+                </div>
+
+                <div class="div10">
+                    <div id="previewService"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="underlist">
+
+
+            <div class="srvWrapper">
+
+                <div class="div1">
+                    <center><h1 id="servup_title">Servisi Güncelle</h1></center>
+                </div>
+
+                <div class="div2">
+                    <label>Servis Adı:</label>
+                    <input type="text" id="servup_name" value="">
+                </div>
+
+                <div class="div4">
+                    <label>Tip Numarası:</label>
+                    <select id="servup_type">
+                        <option value="1">Tekil</option>
+                        <option value="2">Paket</option>
+                    </select>
+                </div>                
+
+                <div class="div5">
+                    <label>Servis Süresi</label>
+                    <input type="time" id="servup_spt" value="">
+                </div>
+
+                <div class="div6">
+                    <label>Servis Ücreti:</label>
+                    <input type="text" id="servup_price" value="">
+                </div>
+
+                <div class="div7">
+                    <label>İndirimli Ücreti:</label>
+                    <input type="text" id="servup_disc" value="">
+                </div>
+
+                <div class="div3">
+                    <center>Tanıtım yazısı:</center>
+                    <textarea id="servup_prg"></textarea>
+                </div>
+
+                <div class="div8">
+                    <label>Servis Resmi</label>
+                    <input type="file" class="img-uploader" id="servup_img">
+                </div>
+
+                <div class="div9">
+                    <button id="btn-servup">Servis Ekle</button>
+                </div>
+
+                <div class="div10">
+                    <div id="previewServiceUp"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <div class="employeeList">
+
+        <table border width="100%">
+            <tr>
+                <th>ID</th>
+                <th>Servis İsmi</th>
+                <th>TipID</th>
+                <th>Tip İsmi</th>
+                <th>Servis Ücreti</th>
+                <th>İndirimli Tutar</th>
+                <th>Paragraf</th>
+                <th>Servis Süresi</th>
+                <th>Durum</th>
+                <th>Seçim</th>
+                <th>Değiştir</th>
+            </tr>
+            @foreach (var serv in Model)
+            {
+
+                if (@serv.ServiceStatus == true)
+                {
+                    <tr style="background-color: rgba(0, 150, 0, 0.2)">
+                        <td>@serv.ServiceID</td>
+                        <td>@serv.ServiceName</td>
+                        <td>@serv.TypeID</td>
+                        @if (@serv.TypeID == 1)
+                        {
+                            <td>Tekil</td>
+                        }
+                        else
+                        {
+                            <td>Paket</td>
+                        }
+                        <td>@serv.ServicePrice</td>
+                        <td>@serv.DiscountedPrice</td>
+                        <td>@serv.ServiceParagraph</td>
+                        <td>@serv.TimeSpent</td>
+                        @if (@serv.ServiceStatus == true)
+                        {
+                            <td>Aktif</td>
+                        }
+                        else
+                        {
+                            <td>Pasif</td>
+                        }
+                        <td><button class="btnEditService" value="@serv.ServiceID">Düzenle</button></td>
+                        <td><button class="btnChangeService" value="@serv.ServiceID">Değiş</button></td>
+                    </tr>
+                }
+                else
+                {
+                    <tr style="background-color: rgba(150, 0, 0, 0.2)">
+                        <td>@serv.ServiceID</td>
+                        <td>@serv.ServiceName</td>
+                        <td>@serv.TypeID</td>
+                        @if (@serv.TypeID == 1)
+                        {
+                            <td>Tekil</td>
+                        }
+                        else
+                        {
+                            <td>Paket</td>
+                        }
+                        <td>@serv.ServicePrice</td>
+                        <td>@serv.DiscountedPrice</td>
+                        <td>@serv.ServiceParagraph</td>
+                        <td>@serv.TimeSpent</td>
+                        @if (@serv.ServiceStatus == true)
+                        {
+                            <td>Aktif</td>
+                        }
+                        else
+                        {
+                            <td>Pasif</td>
+                        }
+                        <td><button class="btnEditService" value="@serv.ServiceID">Düzenle</button></td>
+                        <td><button class="btnChangeService" value="@serv.ServiceID">Değiş</button></td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+
+
+</form>
 

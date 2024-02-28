@@ -6,31 +6,34 @@
 
     @foreach (var card in Model.PackageModels)
     {
-        <div class="card">
-            <div class="card-title">
-                <h3>@card.ServiceName</h3>
-                <p>
-                    <span class="prize">@card.DiscountedPrice</span>
-                    <span class="per">/ tek seferde</span>
-                </p>
-                <ul>
-                    @foreach (var paragraphPart in card.ServiceParagraph.Split(','))
+        if (card.ServiceStatus == true)
+        {
+            <div class="card">
+                <div class="card-title">
+                    <h3>@card.ServiceName</h3>
+                    <p>
+                        <span class="prize">@card.DiscountedPrice</span>
+                        <span class="per">/ tek seferde</span>
+                    </p>
+                    <ul>
+                        @foreach (var paragraphPart in card.ServiceParagraph.Split(','))
+                        {
+                            <li>@paragraphPart.Trim()</li>
+                        }
+                    </ul>
+                    @if (Session["UsernameSS"] != null)
                     {
-                        <li>@paragraphPart.Trim()</li>
+                        <button class="rezervet"><a href="@Url.Action("Reservation", "Reservation")">Randevu</a></button>
                     }
-                </ul>
-                @if (Session["UsernameSS"] != null)
-                {
-                    <button class="rezervet"><a href="@Url.Action("Reservation", "Reservation")">Randevu</a></button> 
-                 }
                     else
-                {
+                    {
 
 
-                }
+                    }
 
 
+                </div>
             </div>
-        </div>
+        }
     }
 </section>
