@@ -378,4 +378,67 @@ table {
 }
 /*Testimonials End*/
 /*Earnings Start*/
+.accordionSide {
+    width:15%;
+    box-shadow: 0.5rem 0.5rem 0.5rem -0.5rem rgba(0, 0, 0, 0.2);
+    
+}
+.accordion {
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    border: 1px solid #ddd;
+    outline: none;
+    font-size: 25px;
+    font-weight:bold;
+    transition: 0.4s;
+    text-align: center;
+
+}
+
+    .active, .accordion:hover {
+        background-color: gold;
+    }
+
+.panelaccordion {
+    display: none;
+    overflow: hidden;
+    background-color: white;
+}
+
+.month {
+    cursor: pointer;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ddd;
+    outline: none;
+    font-size: 15px;
+    transition: 0.4s;
+    text-align: center;
+}
+
+    .month:hover {
+        background-color: gold;
+    }
+
+.monthPanel {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+    background-color: white;
+}
+.graphSide {
+    padding: 1%;
+    width: 73%;
+    box-shadow: 0.5rem 0.5rem 0.5rem -0.5rem rgba(0, 0, 0, 0.2);
+}
+.graphInfos{
+    display:flex;
+    flex-direction:row;
+}
+.yearMonth, .totalFee {
+    font-size: 1.5em;
+    margin-right:1.5em;
+}
 /*Earnings End*/

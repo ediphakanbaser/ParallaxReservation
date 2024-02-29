@@ -6,8 +6,10 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -678,18 +680,50 @@ namespace Parallax.Areas.Admin.Controllers
             }
         }
 
-
-
-
         [CustomAuthorize]
         public ActionResult Earnings()
         {
             return View();
         }
 
+        public List<TBLRESERVATION> GetReservationsByDate(DateTime date)
+        {
+            return context.TBLRESERVATIONs
+    .Where(r => DbFunctions.TruncateTime(r.ReserveDateTime) == date.Date)
+    .ToList();
+        }
 
+        public decimal GetTotalFeeByReservationList(List<TBLRESERVATION> reservations)
+        {
+            return reservations.Sum(r => GetServiceFeeById(r.SKILL.ServiceID));
+        }
 
+        private decimal GetServiceFeeById(int serviceId)
+        {
+            return context.TBLSERVICEs
+                .Where(s => s.ServiceID == serviceId)
+                .Select(s => s.ServicePrice)
+                .FirstOrDefault();
+        }
+        [HttpPost]
 
+        public ActionResult GetGraphInfo(int selectedYear, int selectedMonth)
+        {
+            var data = new List<object>();
 
+            for (int day = 1; day <= DateTime.DaysInMonth(selectedYear, selectedMonth); day++)
+            {
+                DateTime currentDate = new DateTime(selectedYear, selectedMonth, day);
+                var reservations = GetReservationsByDate(currentDate);
+                var totalFee = GetTotalFeeByReservationList(reservations);
+
+                data.Add(new
+                {
+                    Day = day,
+                    TotalFee = totalFee
+                });
+            }
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
     }
 }
