@@ -23,7 +23,7 @@ namespace Parallax.Controllers
         {
             context = new ParallaxContext();
         }
-        
+
         public ActionResult Reservation()
         {
             TBLPAGE pageModel = context.TBLPAGEs.FirstOrDefault();
@@ -32,12 +32,21 @@ namespace Parallax.Controllers
             List<TBLSERVICE> tblServices = context.TBLSERVICEs.ToList();
             List<EmpService> empService = context.EmpServices.ToList();
 
+            string usernameFromSession = (string)Session["UsernameSS"];
+
+            // Çift tırnakları kaldırmak için Replace fonksiyonu kullanılıyor
+            string cleanedUsername = usernameFromSession.Replace("\"", "");
+            List<TBLRESERVATION> tblReservation = context.TBLRESERVATIONs
+       .Where(r => r.TBLUSER.Username == cleanedUsername)
+       .ToList();
+
             ReservationViewModel reservationModel = new ReservationViewModel
             {
                 ServiceTypes = serviceType,
                 TBLSERVICEs = tblServices,
                 EmpServices = empService,
-                TimeModel = timeModel
+                TimeModel = timeModel,
+                ReservationModel = tblReservation
             };
 
             return View(reservationModel);
@@ -140,8 +149,8 @@ namespace Parallax.Controllers
                             if (IsConflict(reservedStartTime, slotStartTime, slotEndTime, reservedEndTime))
                             {
                                 slotStartTime = reservedEndTime;
-                                slotEndTime = slotStartTime.Add(selectedTimeSpent);                                
-                            }                            
+                                slotEndTime = slotStartTime.Add(selectedTimeSpent);
+                            }
                         }
                     }
                     if (IsWorkTime(workStartTime, workEndTime, slotStartTime, slotEndTime))
@@ -150,7 +159,7 @@ namespace Parallax.Controllers
                         timeSlots.Add(timeSlot);
                         slotStartTime = slotStartTime.AddMinutes(15);
                         slotEndTime = slotEndTime.AddMinutes(15);
-                    }                                           
+                    }
                 }
             }
             return timeSlots;
@@ -245,6 +254,30 @@ namespace Parallax.Controllers
         {
             DateTime serverTime = DateTime.UtcNow.AddHours(3);
             return serverTime;
+        }
+
+        [HttpPost]
+        public ActionResult DeleteReservation(int reservationID)
+        {
+            try
+            {
+                var reservation = context.TBLRESERVATIONs.FirstOrDefault(e => e.ReservationID == reservationID);
+                if (reservation != null)
+                {
+                    context.TBLRESERVATIONs.Remove(reservation);
+                    context.SaveChanges();
+                    return Json(new { success = true, message = "Rezervasyon başarıyla iptal edildi." });
+                }
+                // Örneğin, rezervasyonu veritabanından silmek gibi
+
+                // Başarılı bir şekilde işlem yapıldığını belirten bir mesaj dönebilirsiniz
+                return Json(new { success = false, message = "Rezervasyon bulunamadı." });
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda kullanıcıya bilgi verin
+                return Json(new { success = false, message = "Rezervasyon iptali sırasında bir hata oluştu." });
+            }
         }
     }
 }

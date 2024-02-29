@@ -105,6 +105,7 @@
     <Content Include="Areas\Admin\Content\images\favicon.png" />
     <Content Include="Areas\Admin\Content\images\login.jpg" />
     <Content Include="Areas\Admin\Content\images\logo.png" />
+    <Content Include="Areas\Admin\Scripts\adminEarnings.js" />
     <Content Include="Areas\Admin\Scripts\adminlogin.js" />
     <Content Include="Areas\Admin\Scripts\imageEmployee.js" />
     <Content Include="Areas\Admin\Scripts\imagePage.js" />
@@ -178,6 +179,7 @@
     <Content Include="Areas\Admin\Scripts\charCounter.js" />
     <Content Include="Scripts\js\datepicker.js" />
     <Content Include="Scripts\js\preloader.js" />
+    <Content Include="Scripts\js\reservationModal.js" />
     <Content Include="Scripts\js\sidebuttons.js" />
     <Content Include="Scripts\js\slider.js" />
     <Content Include="Scripts\js\testimonial.js" />

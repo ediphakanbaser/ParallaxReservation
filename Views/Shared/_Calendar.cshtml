@@ -28,7 +28,18 @@
             <div class="vertical-box">
                 <button id="reservationSave">Rezervasyon Oluştur</button>
             </div>
+
+            <div class="vertical-box">
+                <button id="btnCalendarModal">
+                    Rezervasyonlarınızı görüntülemek için tıklayınız!!
+                </button>
+            </div>
+
+
+
             
+
+
         </div>
     </div>
     <div class="reservation-list">
@@ -54,12 +65,77 @@
     </div>
 </div>
 
+<div id="fullScreenModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModalBtn">&times;</span>
+        <div class="tableRes"><h2>Rezervasyon Geçmişi</h2>
+            <table border width="100%">
 
+
+                <tr>
+                    <th rowspan="2" id="selection-row">Seçim</th>
+                    <th colspan="3">Tarih bilgisi</th>
+                    <th colspan="2">Hizmet Bilgisi</th>
+
+                </tr>
+                <tr>
+                    <th class="date-row">Gün</th>
+                    <th class="time-row">Başlangıç Zamanı</th>
+                    <th class="time-row">Bitiş Zamanı</th>
+                    <th class="service-row">Personel İsmi</th>
+                    <th class="service-row">Hizmet İsmi</th>
+
+                </tr>
+                @foreach (var item in Model.ReservationModel)
+                {
+                    if (item.ReserveDateTime.HasValue && item.ServiceEndDateTime.HasValue &&
+             item.ReserveDateTime.Value.Date == item.ServiceEndDateTime.Value.Date)
+                    {
+                        <tr>
+                            @if (item.ServiceEndDateTime <= DateTime.UtcNow.AddHours(3))
+                            {
+                                <td style="background-color:red">
+                                    <input type="radio" name="options" value="@item.ReservationID" disabled>
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="background-color:green">
+                                    <input type="radio" name="options" value="@item.ReservationID" >
+                                </td>
+                            }
+                            <td>
+                                @item.ReserveDateTime.Value.ToString("dd.MM.yyyy")
+                            </td>
+
+                            <td>
+                                @item.ReserveDateTime.Value.ToString("HH:mm")
+                            </td>
+
+
+                            <td>
+                                @item.ServiceEndDateTime.Value.ToString("HH:mm")
+                            </td>
+                            <td>
+                                @item.SKILL.TBLEMPLOYEE.EmpName @item.SKILL.TBLEMPLOYEE.EmpSurname
+                            </td>
+                            <td>
+                                @item.SKILL.TBLSERVICE.ServiceName
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </table>
+        <button id="rsvCancel">İptal Et</button>
+        </div>
+    </div>
+</div>
 
 <script>
     $(document).ready(function () {
 
-        
+
 
         $("#serviceSelect").on("change", function () {
             var selectedDateTime = $("#datepicker-input").val();
